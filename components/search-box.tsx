@@ -13,9 +13,9 @@ export const SearchBox = () => {
     ]
   return (
     <div className=' rounded-md bg-neutral-100/90 shadow-sm gap-x-1.5 flex items-center justify-center
-     px-2 py-3 md:px-6 w-full mx-2 md:mx-0 md:w-[700px]'>
+     px-2 py-3 md:px-6 w-full mx-2 md:mx-0 md:w-[700px] relative'>
          
-         <div className=" flex flex-col gap-y-0.5 relative w-full">
+         <div className=" flex flex-col relative w-full">
           <SelectHeader dataType="category" />
           <select
             value={category}

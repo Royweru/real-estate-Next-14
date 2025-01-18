@@ -12,7 +12,7 @@ export const SelectHeader = ({
 }:CustomHeaderProps) => {
 
   return (
-        <h4 className=' font-semibold font-montserrat text-sm w-full text-center text-neutral-800/95'>
+        <h4 className=' font-normal font-montserrat text-sm w-full text-center text-neutral-800/95'>
           {
             dataType==="location"?"Location":dataType==="category"?"Category":"Type"
           }
