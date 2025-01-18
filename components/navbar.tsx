@@ -9,7 +9,7 @@ export const Navbar =  () => {
     const navigation = [
         { title: "Features", path: "javascript:void(0)" },
         { title: "Integrations", path: "javascript:void(0)" },
-        { title: "Blog", path: "javascript:void(0)" },
+        { title: "Blog", path: "/blog" },
         { title: "Pricing", path: "javascript:void(0)" }
     ]
 
