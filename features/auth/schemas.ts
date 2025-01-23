@@ -19,9 +19,6 @@ export const SignupSchema = z.object({
     password:z.string().min(8,{
        message:"Password should have at least 8 characters"
     }),
-    confirmPassword:z.string().min(8,{
-       message:"Password should have at least 8 characters"
-    }),
-    phoneNumber:z.coerce.number().optional(),
+   
 })
 
