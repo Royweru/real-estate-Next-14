@@ -1,8 +1,9 @@
 import Credentials from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth";
-import { LoginSchema } from "./features/auth/schemas";
+
 import bcyrpt from 'bcryptjs'
 import { getUserByEmail } from "./lib/getUser";
+import { LoginSchema } from "./features/auth/schemas";
 
 // Notice this is only an object, not a full Auth.js instance
 

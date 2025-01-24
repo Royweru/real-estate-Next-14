@@ -1,11 +1,13 @@
 import { Hero } from "@/components/hero";
 import { Navbar } from "@/components/navbar";
+import { serverUser } from "@/lib/serverUser";
 
 
-export default function Home() {
+export default async function Home() {
+  const user = await serverUser()
   return (
    <>
-    <Navbar />
+    <Navbar user={user} />
     <Hero />
    </>
   );
