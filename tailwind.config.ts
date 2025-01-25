@@ -10,10 +10,29 @@ const config: Config = {
   ],
   theme: {
   	extend: {
-  		colors: {
-  			background: 'var(--background)',
-  			foreground: 'var(--foreground)'
-  		},
+		colors: {
+			bg: {
+			  primary: "#F7F8FA",
+			  secondary: "#FEFFFF",
+			},
+			text: {
+			  black: "#000000",
+			  blackgrey: "#383838",
+			  darkblue: "#020f29",
+			},
+			accent: {
+			  yellow: "#FBE30B",
+			  desructive: "#F7231C",
+			},
+			blue: {
+			  france: "#318CE7",
+			  capri: "#0CAFFF",
+			  light: "#ADD8E6",
+			},
+			white: {
+			  DEFAULT: "#FFFFFF",
+			},
+		  },
   		fontFamily: {
   			montserrat: 'var(--font-montserrat)'
   		},

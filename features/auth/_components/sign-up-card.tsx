@@ -120,13 +120,18 @@ export const SignUpCard= () => {
                  </FormItem>
                 )}
                 />
-                <div className=' w-full flex items-center justify-center'>
+                <div className=' w-full flex items-center justify-center flex-col gap-y-2'>
                     <Button 
                     className=' text-white font-semibold hover:opacity-75'
                      type='submit'
+                     variant="outline"
                     >
                       Submit
                     </Button>
+                    <a href="/auth/sign-in" className=' text-sm hover:underline
+                     text-zinc-700 hover:text-zinc-800/95 cursor-pointer font-semibold'>
+                      Already have an account?
+                    </a>
                 </div>
              </form>
         </Form>

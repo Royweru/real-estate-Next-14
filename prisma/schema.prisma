@@ -31,8 +31,8 @@ model User {
   role UserRole @default(USER)
   hashedPwd String
   accounts      Account[]
+  
 
- 
   @@map("users")
 }
  
@@ -64,4 +64,95 @@ model VerificationToken {
  
   @@unique([identifier, token])
   @@map("verification_tokens")
+}
+
+model Agent{
+  id String @id @default(cuid())
+  userId String @unique
+
+ agentName String
+ imageUrl String?
+ licenseId  String?
+ expectedListings Int?
+
+  properties Listing[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+model Location{
+  id String @id @default(cuid())
+
+  county String
+  city String
+
+ properties Listing []
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Category{
+  id String @id @default(cuid())
+  name String
+
+  properties Listing[] 
+}
+
+model Type{
+  id String @id @default(cuid())
+  name String
+  
+  properties Listing[]
+}
+model Listing{
+  id String @id @default(cuid())
+
+  agentId String
+  agent Agent @relation(fields: [agentId],references: [id],onDelete:Cascade)
+
+  locationId String
+  location Location @relation(fields: [locationId],references: [id],onDelete: SetNull)
+  
+  typeId String
+  type Type @relation(fields: [typeId],references: [id],onDelete:Cascade)
+
+  categoryId String
+  category Category @relation(fields: [categoryId],references: [id],onDelete:Cascade)
+  
+  title String
+  description String?
+  images Image[]
+  bedrooms Int
+  amenities String[]
+  rentalPrice Int?
+  purchasePrice Int?
+  bathrooms Int
+  isFeatured Boolean @default(false)
+
+  area Int
+  enquiries Enquiry[]
+}
+
+model Image{
+  id String @id @default(cuid())
+  url String 
+  listingId String
+  listing Listing @relation(fields:[listingId],references:[id],onDelete:Cascade)
+
+  createdAt DateTime @default(now())
+} 
+
+
+model Enquiry{
+  id String @id @default(uuid())
+
+  listingId String
+  listing Listing @relation(fields: [listingId],references: [id],onDelete: Cascade)
+
+  name String
+  email String
+  phone String 
+  message String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

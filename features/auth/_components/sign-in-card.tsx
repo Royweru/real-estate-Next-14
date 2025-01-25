@@ -1,20 +1,23 @@
 "use client"
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import {  useTransition } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from '@/features/auth/schemas'
-import axios from 'axios'
+
 import * as z from 'zod';
 import React from 'react'
 
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
+
 import { Button } from '@/components/ui/button';
+import { Login } from '@/actions/login';
 
 export const SignInCard = () => {
-const router = useRouter()
+  const [isPending,startTransition] = useTransition()
+// const router = useRouter()
 const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -24,19 +27,25 @@ const form = useForm<z.infer<typeof LoginSchema>>({
     });
 
     const onsubmit = async(vals:z.infer<typeof LoginSchema>)=>{
-        try {
-          const res = await axios.post('/api/auth/login',vals)
-          if(res.status === 200){
-            toast.success(res.data.message)
-            router.refresh()
-          }
-        } catch (error) {
-            console.log(error)
-
-        }
-       
-     
-       
+        startTransition(async()=>{
+            const res = await Login(vals)
+            if(res?.error){
+                toast.error(res?.error,{
+                  style:{
+                    backgroundColor:"red",
+                    color:"#fff"
+                  }
+                })
+            }else{
+                toast.success(res?.message||"Successfully logged in",{
+                  style:{
+                    backgroundColor:"green",
+                    color:"#fff"
+                  }
+                })  
+                window.location.reload()
+            }
+        } )
     }
   return (
     <Card className=' w-full mx-3 md:mx-0 md:w-[600px] shadow-sm rounded-xl '>
@@ -56,13 +65,14 @@ const form = useForm<z.infer<typeof LoginSchema>>({
                  control={form.control}
                 render={({field})=>(
                  <FormItem>
-                    <FormLabel className=' font-semibold'>
+                    <FormLabel className=' font-semibold text-neutral-900'>
                         Email
                     </FormLabel>
                     <FormControl>
                         <Input
                             placeholder='johndoe@gmail.com...'
                             {...field}
+                            disabled={isPending}
                             />
                     </FormControl>
                  </FormItem>
@@ -73,7 +83,7 @@ const form = useForm<z.infer<typeof LoginSchema>>({
                  control={form.control}
                 render={({field})=>(
                  <FormItem>
-                    <FormLabel className=' font-semibold'>
+                    <FormLabel className=' font-semibold text-neutral-900'>
                         Password
                     </FormLabel>
                     <FormControl>
@@ -81,16 +91,23 @@ const form = useForm<z.infer<typeof LoginSchema>>({
                             placeholder='********'
                             type='password'
                             {...field}
+                            disabled={isPending}
                             />
                     </FormControl>
                  </FormItem>
                 )}
                 />
-                <div className=' w-full flex justify-center items-center'>
+                <div className=' w-full flex justify-center items-center flex-col gap-y-2'>
                        <Button type='submit'
-                        className=' bg-neutral-800 text-white hover:bg-neutral-900 font-semibold'>
+                        className=' font-semibold'
+                        variant='outline'
+                        disabled={isPending}
+                        >
                         Sign in
                        </Button>
+                       <a href="/auth/sign-up" className=' text-sm hover:underline  cursor-pointer text-neutral-800 hover:text-neutral-900 font-semibold'>
+                        Don&apos;t have an account? Sign up
+                       </a>
                 </div>
              </form>
         </Form>
