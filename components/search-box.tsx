@@ -2,15 +2,11 @@
 
 import React, { useState } from 'react'
 import { SelectHeader } from './select-header'
+import { Category, Location, Type } from '@prisma/client'
 
-export const SearchBox = () => {
+export const SearchBox = ({propertyTypes,categories,locations}:{propertyTypes:Type[],categories:Category[],locations:Location[]}) => {
     const [category,setCategory]  =useState("")
-    const categories = [
-        '1 Bedroom',
-        '2 Bedroom',
-        '3 Bedroom',
-        'single Bedroom',
-    ]
+
   return (
     <div className=' rounded-md bg-neutral-100/90 shadow-sm gap-x-1.5 flex items-center justify-center
      px-2 py-3 md:px-6 w-full mx-2 md:mx-0 md:w-[700px] relative'>
@@ -28,7 +24,7 @@ export const SearchBox = () => {
             </option>
             {categories?.map((category,idx) => (
               <option value={idx} key={idx}>
-                {category}
+                {category.name}
               </option>
             ))}
           </select>
@@ -45,9 +41,9 @@ export const SearchBox = () => {
             <option value={''} selected>
                   Choose location
             </option>
-            {categories?.map((category,idx) => (
+            {locations?.map((location,idx) => (
               <option value={idx} key={idx}>
-                {category}
+                {location.county} , {location.city}
               </option>
             ))}
           </select>
@@ -64,9 +60,9 @@ export const SearchBox = () => {
             <option value={''} selected>
                   Choose type
             </option>
-            {categories?.map((category,idx) => (
+            {propertyTypes?.map((type,idx) => (
               <option value={idx} key={idx}>
-                {category}
+                {type.name}
               </option>
             ))}
           </select>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { User } from "@prisma/client";
 import { Button } from "./ui/button";
 import { logout } from "@/actions/logout";
+import { PlusIcon } from "lucide-react";
 
 export const Navbar = ({ user }: { user: User | null | undefined }) => {
   const [state, setState] = useState(false);
@@ -90,6 +91,18 @@ export const Navbar = ({ user }: { user: User | null | undefined }) => {
                 >
                 Log out
                </Button>
+               <Button
+                onClick={()=>logout()}
+                variant= "ghost"
+                className=" flex items-center gap-x-3"
+                >
+                <PlusIcon className = 'size-5'/>
+                <span className=" font-semibold text-neutral-800/90">
+                        Add Listing
+                      </span> 
+
+               </Button>
+            
                 </>
               ) : (
                 <>
