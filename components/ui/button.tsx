@@ -19,6 +19,8 @@ const buttonVariants = cva(
           "bg-blue-400 text-neutral-100 shadow-sm hover:bg-blue-400/80 border-blue-900 border-b-2 active:border-b-0",
         ghost: "hover:bg-stone-100 hover:text-stone-900 dark:hover:bg-stone-800 dark:hover:text-stone-50",
         link: "text-stone-900 underline-offset-4 hover:underline dark:text-stone-50",
+        sidebar: "text-slate-600 font-bold bg-transparent hover:bg-transparent border-transparent border-0",
+        sidebarActive: "text-sky-500 font-bold bg-sky-500/10 hover:bg-sky-500/25  border-transparent border-sky-300",
       },
       size: {
         default: "h-9 px-4 py-2",
