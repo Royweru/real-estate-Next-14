@@ -21,7 +21,7 @@ export const SidebarItem = ({
      className=' w-full'
     >
      <Link href={href}>
-        <div className=' flex w-full relative gap-x-2'>
+        <div className='  relative gap-x-2 w-full flex items-center'>
             <img src={iconSrc} alt={label} height={20} width={20} />
             <span className=' text-sm '>
                 {label}

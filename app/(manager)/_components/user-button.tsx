@@ -17,21 +17,19 @@ export const UserButton = ({user}:{user:User| null}) => {
     <DropdownMenu>
         <DropdownMenuTrigger>
         <Avatar>
-        <AvatarFallback className=' bg-gradient-to-br from-purple-500 via-purple-200 to-purple-400'>
+        <AvatarFallback className=' bg-gradient-to-br from-purple-500 text-base font-bold text-neutral-100/90
+         via-purple-500 to-purple-400'>
         {user?.name?.charAt(0).toUpperCase()}
+        {user?.name?.charAt(1).toUpperCase()}
         </AvatarFallback>
         </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent side='top' className= ' w-52 p-2' >   
-            <DropdownMenuItem>
-                 <Button 
-                 className=' w-full relative'
-                 variant='destructive'
-                 >
-                    <span className=' text-sm text-white font-semibold'>
-                        Sign Out
-                    </span>
-                 </Button>
+            <DropdownMenuItem className='bg-rose-500 hover:bg-rose-600 text-white 
+            font-semibold hover:cursor-pointer '>
+                <span className=' text-sm'>
+                    Sign Out
+                </span>
             </DropdownMenuItem>
         </DropdownMenuContent>
     </DropdownMenu>

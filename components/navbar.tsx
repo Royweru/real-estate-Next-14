@@ -5,8 +5,10 @@ import { User } from "@prisma/client";
 import { Button } from "./ui/button";
 import { logout } from "@/actions/logout";
 import { PlusIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export const Navbar = ({ user }: { user: User | null | undefined }) => {
+  const router = useRouter()
   const [state, setState] = useState(false);
 
   // Replace javascript:void(0) paths with your paths
@@ -91,8 +93,9 @@ export const Navbar = ({ user }: { user: User | null | undefined }) => {
                 >
                 Log out
                </Button>
+               
                <Button
-                onClick={()=>logout()}
+                onClick={()=>router.push('/listing/new')}
                 variant= "ghost"
                 className=" flex items-center gap-x-3"
                 >

@@ -14,3 +14,13 @@ export const fetchLocationsWithListings = async()=>{
         return []
     }
 }
+
+export const getLocations = async()=>{
+     try {
+         const locations = await db.location.findMany()
+         return locations   
+     } catch (error) {
+        console.error(error)
+        return []
+     }
+}
