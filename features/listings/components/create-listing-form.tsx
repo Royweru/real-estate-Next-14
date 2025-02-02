@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { createListingSchema } from "../schemas";
-import { Category, Type, Status, Location } from "@prisma/client";
+import { Category, Type, Status, Location, Amenity } from "@prisma/client";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -12,6 +12,7 @@ import {
   FormField,
   FormItem,
   FormMessage,
+  FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,17 +26,23 @@ import {
 import Image from "next/image";
 import { X } from "lucide-react";
 import { ImageUpload } from "@/components/image-upload";
+import { VideoUpload } from "@/components/video-upload";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Card, CardContent } from "@/components/ui/card";
+
 interface CreateListingFormProps {
   locations: Location[];
   status: Status[];
   types: Type[];
   categories: Category[];
+  amenities: Amenity[];
 }
 export const CreateListingForm = ({
   locations,
   status,
   types,
   categories,
+  amenities,
 }: CreateListingFormProps) => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const progressBarWidth = `${((currentPage - 1) / 2) * 100}%`;
@@ -45,12 +52,20 @@ export const CreateListingForm = ({
     defaultValues: {
       title: "",
       description: "",
-      price: 0,
+      priceType: "rental",
+      purchasePrice: null,
+      rentalPrice: null,
       locationId: "",
       statusId: "",
       typeId: "",
       categoryId: "",
-      images:[]
+      images: [],
+      videoUrl: undefined,
+      bedrooms: 0,
+      bathrooms: 0,
+      area: 0,
+      amenities: [],
+      isFeatured: false,
     },
   });
 
@@ -181,18 +196,95 @@ export const CreateListingForm = ({
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="price"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input type="number" placeholder="Price" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <Card className="mt-4">
+                  <CardContent className="pt-6">
+                    <div className="space-y-4">
+                      <h4 className="font-medium text-stone-700">Price Details</h4>
+                      
+                      <FormField
+                        control={form.control}
+                        name="priceType"
+                        render={({ field }) => (
+                          <FormItem className="space-y-3">
+                            <FormControl>
+                              <RadioGroup
+                                onValueChange={(value) => {
+                                  field.onChange(value);
+                                  // Reset prices when switching type
+                                  if (value === "purchase") {
+                                    form.setValue("rentalPrice", null);
+                                  } else {
+                                    form.setValue("purchasePrice", null);
+                                  }
+                                }}
+                                defaultValue={field.value}
+                                className="flex flex-col space-y-1"
+                              >
+                                <FormItem className="flex items-center space-x-3 space-y-0">
+                                  <FormControl>
+                                    <RadioGroupItem value="purchase" />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    Purchase Price
+                                  </FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center space-x-3 space-y-0">
+                                  <FormControl>
+                                    <RadioGroupItem value="rental" />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    Rental Price (per month)
+                                  </FormLabel>
+                                </FormItem>
+                              </RadioGroup>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      {form.watch('priceType') === 'purchase' ? (
+                        <FormField
+                          control={form.control}
+                          name="purchasePrice"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Input 
+                                  type="number" 
+                                  placeholder="Enter purchase price"
+                                  {...field}
+                                  onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : null)}
+                                  value={field.value ?? ''}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      ) : (
+                        <FormField
+                          control={form.control}
+                          name="rentalPrice"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Input 
+                                  type="number" 
+                                  placeholder="Enter monthly rental price"
+                                  {...field}
+                                  onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : null)}
+                                  value={field.value ?? ''}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
 
                 <FormField
                   control={form.control}
@@ -220,6 +312,22 @@ export const CreateListingForm = ({
                     </FormItem>
                   )}
                 />
+                <FormField
+                 control={form.control}
+                 name ="area"
+                 render={({field}) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                       type="number"
+                       placeholder="Enter area in square meters"
+                        {...field}
+                       />
+                    </FormControl>
+                    <FormMessage/>
+                  </FormItem> 
+                 )}
+              />
               </div>
             </section>
           )}
@@ -284,7 +392,38 @@ export const CreateListingForm = ({
                     </FormItem>
                   )}
                 />
-
+                <FormField
+                control={form.control}
+                name="bedrooms"
+                render={({field}) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input 
+                      type="number" 
+                      placeholder="Enter number of bedrooms" 
+                      {...field}
+                      />
+                    </FormControl>
+                    <FormMessage/>
+                  </FormItem>
+                )}
+                />  
+                <FormField
+                control={form.control}
+                name="bathrooms"
+                render={({field}) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input 
+                      type="number" 
+                      placeholder="Enter number of bathrooms"
+                       {...field}
+                       />
+                    </FormControl>
+                    <FormMessage/>
+                  </FormItem>
+                )}
+                />
                 <FormField
                   control={form.control}
                   name="description"
@@ -301,6 +440,50 @@ export const CreateListingForm = ({
                     </FormItem>
                   )}
                 />
+
+                <FormField
+                  control={form.control}
+                  name="amenities"
+                  render={({ field }) => (
+                    <FormItem className="col-span-2">
+                      <FormLabel className="text-base">Amenities</FormLabel>
+                      <FormControl>
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                          {amenities.map((amenity) => (
+                            <label
+                              key={amenity.id}
+                              className={`
+                                flex items-center gap-x-2 p-3 border rounded-lg cursor-pointer transition-colors
+                                ${field.value?.some(a => a.id === amenity.id) 
+                                  ? 'border-sky-500 bg-sky-50' 
+                                  : 'border-gray-200 hover:border-sky-200'}
+                              `}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={field.value?.some(a => a.id === amenity.id)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    field.onChange([...field.value || [], amenity]);
+                                  } else {
+                                    field.onChange(
+                                      field.value?.filter(a => a.id !== amenity.id) || []
+                                    );
+                                  }
+                                }}
+                                className="h-4 w-4 text-sky-500 border-gray-300 rounded focus:ring-sky-500"
+                              />
+                              <span className="text-sm font-medium text-gray-700">
+                                {amenity.name}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </section>
           )}
@@ -311,6 +494,7 @@ export const CreateListingForm = ({
               <h3 className="text-lg font-semibold text-stone-700">
                 Media Upload
               </h3>
+              
               <FormField
                 control={form.control}
                 name="images"
@@ -345,7 +529,7 @@ export const CreateListingForm = ({
                       
                       </div>
                       <div className="grid grid-cols-4 gap-4 mt-4">
-                        {field.value?.length > 0 && field.value.map((img: {url: string}) => (
+                        {field.value.length >0  && field.value.map((img: {url: string}) => (
                           <div className="aspect-square rounded-md relative group"
                            key={img.url}
                           >
@@ -353,13 +537,13 @@ export const CreateListingForm = ({
                               fill
                               src={img.url}
                               alt="Property Image"
-                              className="object-cover object-center  rounded-md"
+                              className="object-cover object-center rounded-md"
                             />
                             <Button
                               variant="destructive"
                               size="icon"
                               className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition"
-                              onClick={()=>field.onChange([...field.value.filter((current: {url: string}) => current.url !== img.url)])}
+                              onClick={()=>field.onChange(field.value.filter((current: {url: string}) => current.url !== img.url))}
                             >
                               <X className="size-4 text-white font-bold" />
                             </Button>
@@ -367,21 +551,42 @@ export const CreateListingForm = ({
                         ))}
                       </div>
                     </div>
+                   
                   </div>
                 )}
               />
-              {/* Video Upload */}
-              {/* <div className="space-y-2">
-              <h4 className="font-medium text-stone-700">Property Video Tour</h4>
-              <div className="border-2 border-dashed rounded-lg p-8 text-center">
-                <p className="text-gray-500">Upload a video tour of the property</p>
-                <p className="text-sm text-gray-400 mt-1">Supported formats: MP4, MOV (max 100MB)</p>
-                <Button variant="secondary" className="mt-2">
-                  Upload Video
-                </Button>
-              </div>
-              <div className="aspect-video bg-gray-100 rounded-md mt-4"></div>
-            </div> */}
+              <FormField 
+                control={form.control}
+                name="videoUrl"
+                render={({ field }) => (  
+               <div className="space-y-2">
+                      <h4 className="font-medium text-stone-700">Property Video Tour</h4>
+                      <p className = 'text-sm  text-stone-900/85 font-light'>
+                         This is optional but highly recommended
+                      </p>
+                      <div className="border-2 border-dashed rounded-lg p-8 text-center">
+                       <VideoUpload onChange={field.onChange} disabled={false}/>  
+                      </div>
+                      {field.value &&(
+                           <div className="relative mt-4">
+                           <video 
+                             className="w-full rounded-lg"
+                             controls
+                             src={field.value}
+                           />
+                           <Button
+                             variant="destructive"
+                             size="icon"
+                             className="absolute top-2 right-2"
+                             onClick={() => field.onChange(null)}
+                           >
+                             <X className="size-4 text-white font-bold" />
+                           </Button>
+                         </div>
+                      )}
+                    </div>
+                )}
+              />
             </section>
           )}
 

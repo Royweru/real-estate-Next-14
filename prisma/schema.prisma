@@ -66,19 +66,6 @@ model VerificationToken {
   @@map("verification_tokens")
 }
 
-model Agent{
-  id String @id @default(cuid())
-  userId String @unique
-
- agentName String
- imageUrl String?
- licenseId  String?
- expectedListings Int?
-
-  properties Listing[]
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-}
 model Location{
   id String @id @default(cuid())
 
@@ -109,11 +96,14 @@ model Type{
   
   properties Listing[]
 }
+model Amenity {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  listings    Listing[]  @relation("ListingToAmenity")
+}
+
 model Listing{
   id String @id @default(cuid())
-
-  agentId String
-  agent Agent @relation(fields: [agentId],references: [id],onDelete:Cascade)
 
   locationId String
   location Location @relation(fields: [locationId],references: [id],onDelete: SetNull)
@@ -130,10 +120,12 @@ model Listing{
   title String
   description String?
   images Image[]
+  videoUrl String?
   bedrooms Int
-  amenities String[]
-  rentalPrice Int?
-  purchasePrice Int?
+  amenities   Amenity[]  @relation("ListingToAmenity")
+  priceType    String    @default("rental") // "purchase" or "rental"
+  purchasePrice Float?   // Optional purchase price
+  rentalPrice   Float?   // Optional rental price
   bathrooms Int
   isFeatured Boolean @default(false)
 

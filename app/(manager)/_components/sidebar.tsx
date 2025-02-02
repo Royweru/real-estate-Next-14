@@ -33,7 +33,7 @@ export const Sidebar = (
                <SidebarItem 
                 label='Profile'
                 iconSrc = '/profileicon.jpeg'
-                href = '/management/profile'
+                href = '/management/profile/edit'
                />
            </div>
            <div className=' p-4 w-full'>

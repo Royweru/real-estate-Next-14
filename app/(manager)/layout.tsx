@@ -16,7 +16,7 @@ const ManagerLayout =async ({
          <div className = ' w-[256px] h-full  lg:block hidden fixed top-0 left-0 overflow-y-auto border-r border-stone-800'>
             <Sidebar user = {user} />  
          </div>
-         <div className=' w-full h-full  lg:pl-[256px] max-w-7xl mx-auto'>
+         <div className=' w-full min-h-screen  lg:pl-[256px] max-w-7xl mx-auto'>
              <MobileHeader user = {user} /> 
              <main className=' w-full relative mt-16 lg:mt-0 '>
                 {children}

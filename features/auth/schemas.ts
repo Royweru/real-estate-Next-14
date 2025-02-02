@@ -22,3 +22,16 @@ export const SignupSchema = z.object({
    
 })
 
+export const UserSchema = z.object({
+    name:z.string().min(3,{
+        message:"Name is required"
+    }),
+    email:z.string().email().min(3,{
+        message:"Email is required"
+    }),
+    imageUrl:z.string().url().optional(),
+    role:z.enum(['ADMIN','USER','AGENT']).optional(),
+    hashedPwd:z.string().optional(),
+})
+
+export type UserSchemaType = z.infer<typeof UserSchema>

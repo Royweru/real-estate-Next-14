@@ -38,12 +38,14 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
 
 
       <CldUploadWidget 
-        onSuccess={onUpload} 
+        onUpload={onUpload} 
         uploadPreset="rentals"
         options={{
           maxFiles: 10,
           multiple: true,
-          maxFileSize: 1024 * 1024 * 10, // 10MB
+          maxFileSize: 1024 * 1024 * 10, // 10MB,
+          resourceType:"image",
+          sources:["local","dropbox","url","camera","google_drive","unsplash"],
         }}
       >
         {({ open }) => {

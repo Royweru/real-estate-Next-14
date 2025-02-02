@@ -7,6 +7,7 @@ import {db} from '@/lib/prismadb'
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 const app = new Hono()
+
 .post('/register',
     zValidator("json",z.object({
         email:z.string().email(),

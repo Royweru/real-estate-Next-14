@@ -1,16 +1,11 @@
-import { db } from "@/lib/prismadb"
+import { prisma } from "@/lib/prisma"
 
-
-export const fetchCategories = async() => {
+export async function fetchCategories() {
     try {
-        const categories = await db.category.findMany({
-            include:{
-                properties:true
-            }
-        })
+        const categories = await prisma.category.findMany()
         return categories
     } catch (error) {
-        console.error(error)
-        return []
+        console.error("Error fetching categories:", error)
+        throw error
     }
 }
