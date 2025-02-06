@@ -19,7 +19,7 @@ const CreateListingAgent = async ({params}:{params:{listingId:string}}) => {
 
     if(!activeUser) return redirect('/auth/sign-in')
 
-    if(!activeUser.emailVerified)return redirect('/management/profile/edit')
+    // if(!activeUser.emailVerified)return redirect('/management/profile/edit')
 
   return (
     <>

@@ -1,0 +1,28 @@
+/* ListingCard.css */
+.listing-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: transform 0.2s;
+}
+
+.listing-card:hover {
+    transform: scale(1.05);
+}
+
+.listing-title {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.listing-description {
+    color: #666;
+}
+
+.listing-price {
+    font-weight: bold;
+    color: #2c3e50;
+}

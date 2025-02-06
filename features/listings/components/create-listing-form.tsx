@@ -29,6 +29,9 @@ import { ImageUpload } from "@/components/image-upload";
 import { VideoUpload } from "@/components/video-upload";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent } from "@/components/ui/card";
+import axios from "axios";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface CreateListingFormProps {
   locations: Location[];
@@ -46,7 +49,7 @@ export const CreateListingForm = ({
 }: CreateListingFormProps) => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const progressBarWidth = `${((currentPage - 1) / 2) * 100}%`;
-
+  const router = useRouter()
   const form = useForm<z.infer<typeof createListingSchema>>({
     resolver: zodResolver(createListingSchema),
     defaultValues: {
@@ -65,7 +68,7 @@ export const CreateListingForm = ({
       bathrooms: 0,
       area: 0,
       amenities: [],
-      isFeatured: false,
+      // isFeatured: false,
     },
   });
 
@@ -73,9 +76,23 @@ export const CreateListingForm = ({
     try {
       // Handle form submission
       console.log(values);
+      const res = await axios.post('/api/listings/create',values)
+      if(res.status ===201) {
+        toast.success("Listing created successfully!!",{
+          style:{
+            backgroundColor:"green",
+            color: "#ffff",
+          }
+
+        })
+        form.reset()
+        router.push('/management/properties')
+      }
     } catch (error) {
       console.error(error);
+      toast.error("Ooopsy seems like something went wrong")
     }
+
   };
 
   return (
@@ -162,7 +179,10 @@ export const CreateListingForm = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input placeholder="Property Title" {...field} />
+                        <Input 
+                        placeholder="Property Title"
+                         {...field} 
+                         />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -211,20 +231,22 @@ export const CreateListingForm = ({
                                 onValueChange={(value) => {
                                   field.onChange(value);
                                   // Reset prices when switching type
-                                  if (value === "purchase") {
-                                    form.setValue("rentalPrice", null);
-                                  } else {
-                                    form.setValue("purchasePrice", null);
-                                  }
+                                if(value === "purchase"){
+                                  form.setValue("rentalPrice", null)
+                                }else{
+                                  form.setValue("purchasePrice", null)
+                                }
                                 }}
                                 defaultValue={field.value}
                                 className="flex flex-col space-y-1"
+
                               >
+
                                 <FormItem className="flex items-center space-x-3 space-y-0">
                                   <FormControl>
                                     <RadioGroupItem value="purchase" />
                                   </FormControl>
-                                  <FormLabel className="font-normal">
+                                  <FormLabel className="font-normal italic`">
                                     Purchase Price
                                   </FormLabel>
                                 </FormItem>
@@ -232,10 +254,11 @@ export const CreateListingForm = ({
                                   <FormControl>
                                     <RadioGroupItem value="rental" />
                                   </FormControl>
-                                  <FormLabel className="font-normal">
+                                  <FormLabel className="font-normal italic">
                                     Rental Price (per month)
                                   </FormLabel>
                                 </FormItem>
+
                               </RadioGroup>
                             </FormControl>
                             <FormMessage />
@@ -453,25 +476,28 @@ export const CreateListingForm = ({
                             <label
                               key={amenity.id}
                               className={`
-                                flex items-center gap-x-2 p-3 border rounded-lg cursor-pointer transition-colors
-                                ${field.value?.some(a => a.id === amenity.id) 
+                                flex items-center gap-x-2 p-3  border rounded-lg cursor-pointer transition-colors
+                                  ${field.value?.some((id: string) => id === amenity.id) 
                                   ? 'border-sky-500 bg-sky-50' 
-                                  : 'border-gray-200 hover:border-sky-200'}
+                                  : 'border-gray-200 hover:border-sky-200'
+                                }
+
                               `}
                             >
                               <input
                                 type="checkbox"
-                                checked={field.value?.some(a => a.id === amenity.id)}
+                                checked={field.value?.some(id => id === amenity.id)}
                                 onChange={(e) => {
                                   if (e.target.checked) {
-                                    field.onChange([...field.value || [], amenity]);
+                                    field.onChange([...field.value || [], amenity.id]);
+
                                   } else {
                                     field.onChange(
-                                      field.value?.filter(a => a.id !== amenity.id) || []
+                                      field.value?.filter(id => id !== amenity.id) || []
                                     );
                                   }
                                 }}
-                                className="h-4 w-4 text-sky-500 border-gray-300 rounded focus:ring-sky-500"
+                                className="size-5 text-sky-500 border-gray-300 rounded focus:ring-sky-500"
                               />
                               <span className="text-sm font-medium text-gray-700">
                                 {amenity.name}
@@ -591,7 +617,7 @@ export const CreateListingForm = ({
           )}
 
           {/* Navigation Buttons */}
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <Button
               type="button"
               variant="outline"

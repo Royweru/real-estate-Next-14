@@ -61,5 +61,11 @@ const app = new Hono()
      }
     }
 )
-
+.delete('/delete/:id',async(c)=>{
+    const {id} = c.req.param()
+    const user = await db.user.delete({
+        where:{id}
+    })
+    return c.json({message:"User deleted successfully",user},200)
+})  
 export default app;

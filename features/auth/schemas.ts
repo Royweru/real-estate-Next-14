@@ -31,7 +31,8 @@ export const UserSchema = z.object({
     }),
     imageUrl:z.string().url().optional(),
     role:z.enum(['ADMIN','USER','AGENT']).optional(),
-    hashedPwd:z.string().optional(),
+    newPassword:z.string().optional(),
+    confirmPassword:z.string().optional(),
 })
 
 export type UserSchemaType = z.infer<typeof UserSchema>

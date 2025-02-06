@@ -122,7 +122,7 @@ export const SignUpCard= () => {
                 />
                 <div className=' w-full flex items-center justify-center flex-col gap-y-2'>
                     <Button 
-                    className=' text-white font-semibold hover:opacity-75'
+                    className='  font-semibold hover:opacity-75'
                      type='submit'
                      variant="outline"
                     >

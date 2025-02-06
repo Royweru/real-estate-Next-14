@@ -31,7 +31,7 @@ model User {
   role UserRole @default(USER)
   hashedPwd String
   accounts      Account[]
-  
+  listings Listing[]
 
   @@map("users")
 }
@@ -104,6 +104,9 @@ model Amenity {
 
 model Listing{
   id String @id @default(cuid())
+
+  userId String
+  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
 
   locationId String
   location Location @relation(fields: [locationId],references: [id],onDelete: SetNull)

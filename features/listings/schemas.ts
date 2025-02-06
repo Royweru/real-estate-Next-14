@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const createListingSchema = z.object({
     title: z.string().min(3),
-    description: z.string().min(10),
+    description: z.string(),
     videoUrl: z.string().optional(),
     priceType: z.enum(["purchase", "rental"]),
     purchasePrice: z.number().nullable().optional(),
@@ -14,14 +14,12 @@ export const createListingSchema = z.object({
     images: z.array(z.object({
         url: z.string().min(1)
     })).min(1).max(10),
-    bedrooms: z.number().min(1),
-    bathrooms: z.number().min(1),
-    area: z.number().min(1),
-    amenities: z.array(z.object({
-        id: z.string(),
-        name: z.string()
-    })).min(1, "Select at least one amenity"),
-    isFeatured: z.boolean().default(false).optional(),
+    bedrooms: z.coerce.number().min(1),
+    bathrooms: z.coerce.number().min(1),
+    area: z.coerce.number().min(1),
+
+    amenities: z.array(z.string()).min(1, "Select at least one amenity"),
+    // isFeatured: z.boolean().default(false).optional(),
 }).refine((data) => {
     if (data.priceType === "purchase") {
         return data.purchasePrice && data.purchasePrice > 0;
