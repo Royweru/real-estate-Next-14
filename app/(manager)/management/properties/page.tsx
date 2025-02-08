@@ -26,7 +26,6 @@ const PropertiesPage =async () => {
     <ListingsDisplay 
       properties= {properties}
     />
-    
     </div>
 
   )
