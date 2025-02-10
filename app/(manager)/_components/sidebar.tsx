@@ -26,9 +26,9 @@ export const Sidebar = (
                 href = '/management/properties'
                />
                <SidebarItem 
-                label='Enquiries'
+                label='Inquiries'
                 iconSrc = '/alerts.png'
-                href = '/management/enquiries'
+                href = '/management/inquiries'
                />
                <SidebarItem 
                 label='Profile'

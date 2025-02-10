@@ -10,7 +10,7 @@ export const MediaSection = ({
 ) => {
     if(!data) return
   return (
-       <div className=' relative w-full grid lg:grid-cols-4 h-full
+       <div className=' relative w-full grid lg:grid-cols-4
                   md:grid-cols-4 grid-cols-3 gap-x-2.5 gap-y-2 row-span-7'>
                     
                         {data.videoUrl?(
@@ -60,7 +60,7 @@ export const MediaSection = ({
                                />
                                  </div>
                              ))}
-                             {data.images[2].url&&(
+                             {data.images[2]?.url&&(
                                  <div
                                  key={data.images[2].url}
                                  className=' col-span-4 row-span-1'

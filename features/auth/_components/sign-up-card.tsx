@@ -24,7 +24,9 @@ import axios from 'axios'
 import { toast } from 'sonner'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
 export const SignUpCard= () => {
+    const router = useRouter()
     const form = useForm<z.infer<typeof SignupSchema>>({
         resolver:zodResolver(SignupSchema),
         defaultValues:{
@@ -38,6 +40,7 @@ export const SignUpCard= () => {
             const res = await axios.post('/api/auth/register',vals)
             if(res.status ===201){
                 toast.success(res.data.message)
+                router.push('/auth/sign-in')
                 form.reset()
             }
          }catch(err){

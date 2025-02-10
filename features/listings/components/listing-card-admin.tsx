@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 
 
-export const ListingCard = ({
+export const ListingCardAdmin = ({
     data
 }:{
     data:Listing&{
@@ -46,7 +46,7 @@ export const ListingCard = ({
         {data.description?.slice(0,50)} ......
         </p>
       <span className="text-lg font-semibold text-green-600">
-        ${ data.rentalPrice ? data.rentalPrice.toLocaleString('en') : data.purchasePrice?.toLocaleString('en') }
+        Kea { data.rentalPrice ? data.rentalPrice.toLocaleString('en') : data.purchasePrice?.toLocaleString('en') }
       </span>
         </div>
       

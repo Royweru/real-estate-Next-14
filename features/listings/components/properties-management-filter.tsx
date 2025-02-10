@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 import { Category, Location, Status, Type } from '@prisma/client'
 import { SearchIcon } from 'lucide-react'
 import React,{useState} from 'react'
+import { useFiltersPropertiesAdmin } from '../hooks/use-filters-admin'
 
 export const PropertiesManagementFilter = ({
 categories,
@@ -14,23 +16,35 @@ locations
     status:Status[],
     locations:Location[]
 }) => {
-    const [propertyTypeId,setPropertyTypeId] = useState<string>("")
-    const [categoryId,setCategoryId] = useState<string>("")
-    const [statusId,setStatusId] = useState<string>("")
-    const [locationId,setLocationId] = useState<string>("")
+    const [searchTypeId,setSearchTypeId] = useState<string>("")
+    const [searchCategoryId,setSearchCategoryId] = useState<string>("")
+    const [searchStatusId,setSearchStatusId] = useState<string>("")
+    const [searchLocationId,setSearchLocationId] = useState<string>("")
+
+    const [{statusId},setFilters]= useFiltersPropertiesAdmin()
+    
+    const onSearch = async()=>{
+      setFilters({
+        typeId:searchTypeId,
+        locationId:searchLocationId,
+        categoryId:searchCategoryId,
+        statusId:searchStatusId
+      })
+    
+    }
   return (
      <div className='relative max-w-4xl mx-auto py-2 px-2'>
         <div className=' flex items-center w-full relative gap-2.5 flex-wrap justify'>
            
                 <select 
-                  value={categoryId}
-                  onChange={(e)=>setCategoryId(e.target.value)}
+                  value={searchCategoryId}
+                  onChange={(e)=>setSearchCategoryId(e.target.value)}
                  className=' p-2 rounded-md border border-slate-500/95 bg-neutral-200/95 text-neutral-700 shadow-sm'
                 >
                        <option value="" defaultChecked>Choose a category</option>
                     {categories?.map((category)=>(
                    <option
-                    value=""
+                    value={category.id}
                     key={category.id}
                     >
                           {category.name}
@@ -38,8 +52,8 @@ locations
                     ))}
                 </select>
                 <select 
-                 value={propertyTypeId}
-                  onChange={(e)=>setPropertyTypeId(e.target.value)}
+                 value={searchTypeId}
+                  onChange={(e)=>setSearchTypeId(e.target.value)}
                  className=' p-2 rounded-md border border-slate-500/95 bg-neutral-200/95 text-neutral-700 shadow-sm'
                 >
                     <option value="" defaultChecked>Property types</option>
@@ -54,8 +68,8 @@ locations
                 </select>
                 <select 
 
-                  value={statusId}
-                  onChange={(e)=>setStatusId(e.target.value)}
+                  value={searchStatusId}
+                  onChange={(e)=>setSearchStatusId(e.target.value)}
                  className=' p-2 rounded-md border border-slate-500/95 bg-neutral-200/95 text-neutral-700 shadow-sm'
                 >
                     <option value="" defaultChecked>Status</option>
@@ -70,8 +84,8 @@ locations
                 </select>
                 <select 
 
-                  value={locationId}
-                  onChange={(e)=>setLocationId(e.target.value)}
+                  value={searchLocationId}
+                  onChange={(e)=>setSearchLocationId(e.target.value)}
                  className=' p-2 rounded-md border border-slate-500/95 bg-neutral-200/95 text-neutral-700 shadow-sm'
                 >
                     <option
@@ -87,12 +101,37 @@ locations
                     ))}
                    
                 </select>
-              <div className='relative'>
-                     <button  className=' bg-sky-100/95 p-2 rounded-lg shadow-sm border-b-2 active:border-b-0 flex items-center gap-x-2 relative  justify-center font-semibold text-neutral-800/95'>
+              <div className='relative gap-x-2 flex items-center justify-center'>
+                     <button  
+                     className=' bg-sky-100/95 p-2 rounded-lg 
+                     shadow-sm border-b-2 active:border-b-0 flex
+                      items-center gap-x-2 relative  justify-center 
+                      font-semibold text-neutral-800/95'
+                      onClick={onSearch}
+                      >
                         <p className=' font-semibold text-sm'>
                             Search
                         </p>
                         <SearchIcon className=' size-4 font-bold' />
+                     </button>
+                     <button  
+                     className=' bg-rose-500/95 p-2 rounded-lg 
+                     shadow-sm border-b-2 active:border-b-0 flex
+                      items-center gap-x-2 relative  justify-center 
+                      font-semibold text-neutral-100/95'
+                      onClick={()=>{setFilters({
+                        typeId:"",
+                        locationId:"",
+                        categoryId:"",
+                        statusId:""
+                      })
+                   
+                    }}
+                      >
+                        <p className=' font-semibold text-sm'>
+                            Reset
+                        </p>
+                        
                      </button>
               </div>
         </div>

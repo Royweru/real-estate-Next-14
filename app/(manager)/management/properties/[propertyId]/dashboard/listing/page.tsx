@@ -24,7 +24,7 @@ const PropertyManagementListing = async ({
     <ListingManagementAnalytics />
   </TabsContent>
   <TabsContent value='info'>
-     <ListingManagementBasicInfo data={listing} />
+     <ListingManagementBasicInfo data={{ ...listing, rentalPrice: listing.rentalPrice ?? 0, purchasePrice: listing.purchasePrice ?? 0 }} />
   </TabsContent>
       </Tabs>
     </div>

@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import React from "react";
 import { ListingType } from "../types";
-import { MediaSection } from "./media-section";
+import { MediaSection } from "./media-section-admin";
 import { CheckCircleIcon } from "lucide-react";
 
 export const ListingManagementBasicInfo = ({ data }: { data: ListingType }) => {
@@ -103,8 +103,8 @@ export const ListingManagementBasicInfo = ({ data }: { data: ListingType }) => {
                 </h5>
                 <p className=" text-xl font-semibold text-zinc-950">
                   {data.priceType === "purchase"
-                    ? data.purchasePrice.toLocaleString("en")
-                    : data.rentalPrice.toLocaleString("en")}
+                    ? data.purchasePrice?.toLocaleString("en") ?? "N/A"
+                    : data.rentalPrice?.toLocaleString("en") ?? "N/A"}
                 </p>
               </div>
             </div>

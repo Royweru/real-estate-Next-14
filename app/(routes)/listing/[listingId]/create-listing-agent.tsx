@@ -8,6 +8,7 @@ import { fetchCategories } from "@/actions/fetchCategories"
 import { fetchAmenities } from "@/actions/fetchAmenities"
 import { serverUser } from "@/lib/serverUser"
 import { redirect } from "next/navigation"
+import { fetchListing } from "@/actions/fetchProperty"
 
 const CreateListingAgent = async ({params}:{params:{listingId:string}}) => {
    const activeUser= await serverUser()
@@ -17,14 +18,29 @@ const CreateListingAgent = async ({params}:{params:{listingId:string}}) => {
     const categories = await fetchCategories()
     const amenities = await fetchAmenities()
 
+    const listing = await fetchListing(params.listingId)
+
     if(!activeUser) return redirect('/auth/sign-in')
 
     // if(!activeUser.emailVerified)return redirect('/management/profile/edit')
 
   return (
     <>
-      {params.listingId === 'new' ? <CreateListingForm locations={locations} status={listingStatus} types={listingTypes} categories={categories} amenities={amenities} /> : 
-      <EditListingForm listingId={params.listingId} />}
+      {params.listingId === 'new' ? 
+      <CreateListingForm
+       locations={locations}
+        status={listingStatus}
+         types={listingTypes} 
+         categories={categories} 
+         amenities={amenities} /> : 
+      <EditListingForm
+      data={listing}
+      amenities={amenities}
+      locations={locations}
+      status={listingStatus}
+       types={listingTypes} 
+       categories={categories} 
+      />}
     </>
   )
 }

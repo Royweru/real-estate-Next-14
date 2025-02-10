@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { Listing, Location } from "@prisma/client";
+import { LocationWithListingsProps } from "@/features/listings/types";
 import React, { useState } from "react";
 import { useMedia } from "react-use";
 
 export const CitiesGrid = ({
   data,
 }: {
-  data: (Location & {
-    properties: Listing[];
-  })[] | null;
+  data:LocationWithListingsProps[] |null
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const isMobile = useMedia("(max-width: 540px)");
@@ -37,7 +35,7 @@ export const CitiesGrid = ({
 
   return (
     <>
-      <div className=" md:grid-cols-3 grid-cols-2 gap-1 md:gap-1.5 grid h-full w-full ">
+      <div className=" md:grid-cols-3 sm:grid-cols-2 gap-1 md:gap-1.5 grid h-full w-full ">
         {currentItems.map((item, idx) => (
           <div
             className="
@@ -48,7 +46,7 @@ export const CitiesGrid = ({
             <div
               className=" relative w-full h-full min-h-[400px] bg-center bg-cover rounded-xl"
               style={{
-                backgroundImage: `url('/house3.jpg')`,
+                backgroundImage: `url(${item.properties[0]?.images[0]?.url})`,
               }}
             >
               <div className=" inset-0 absolute bg-black bg-opacity-50 flex flex-col gap-y-1.5 items-start justify-end rounded-xl">

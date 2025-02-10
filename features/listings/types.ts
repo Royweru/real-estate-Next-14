@@ -12,8 +12,8 @@ export type ListingType = {
     videoUrl: string | null;
     bedrooms: number;
     bathrooms:number;
-    rentalPrice:number;
-    purchasePrice:number;
+    rentalPrice:number |null;
+    purchasePrice:number| null;
     priceType:string;
     area: number;
     images: ImageType[];
@@ -24,3 +24,30 @@ export type ListingType = {
     location: Location;
 } | null
 
+
+export interface LocationWithListingsProps {
+  id: string;
+  county: string;
+  city: string;
+  createdAt: Date;
+  updatedAt: Date;
+  properties: {
+    id: string;
+    userId: string;
+    locationId: string;
+    typeId: string;
+    categoryId: string;
+    statusId: string;
+    title: string;
+    description: string | null;
+    videoUrl: string | null;
+    bedrooms: number;
+    bathrooms: number;
+    area: number;
+    images: { id: string; url: string }[];
+    amenities: { id: string; name: string }[];
+    priceType: string;
+    purchasePrice: number | null;
+    rentalPrice: number | null;
+  }[];
+}

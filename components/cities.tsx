@@ -1,12 +1,10 @@
 import React from 'react'
 import { SectionHeader } from './section-header';
 import { CitiesGrid } from './cities-grid';
-import { Listing, Location } from '@prisma/client';
+import { LocationWithListingsProps } from '@/features/listings/types';
 
 export const Cities = ({locations}:{
-  locations:(Location&{
-    properties:Listing[]
-  })[]|null
+  locations:LocationWithListingsProps[]|null
 }) => {
 
   return (

@@ -1,25 +1,7 @@
 import { prisma } from "@/lib/prisma"
-import { Listing,Image  as ImageType,Category,Location,Amenity,Status } from "@prisma/client"
 
 
-export async function fetchListing(propertyId: string): Promise<{
-    id: string;
-    userId: string;
-    locationId: string;
-    typeId: string;
-    categoryId: string;
-    statusId: string;
-    title: string;
-    description: string | null;
-    videoUrl: string | null;
-    bedrooms: number;
-    area: number;
-    images: ImageType[];
-    amenities: Amenity[];
-    status: Status;
-    category: Category;
-    location: Location;
-} | null> {
+export async function fetchListing(propertyId: string){
     try {
         if (!propertyId) return null;
 
@@ -34,6 +16,7 @@ export async function fetchListing(propertyId: string): Promise<{
                 location: true,
                 category: true,
                 type: true,
+                
             }
         });
         return listing;

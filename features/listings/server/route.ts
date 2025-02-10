@@ -4,8 +4,10 @@ import { Hono } from "hono";
 import { createListingSchema } from "../schemas";
 import { serverUser } from "@/lib/serverUser";
 import { db } from "@/lib/prismadb";
+import { NextResponse } from "next/server";
 
-const app = new Hono().post(
+const app = new Hono()
+.post(
   "/create",
   zValidator("json", createListingSchema),
   async (c) => {
@@ -85,6 +87,38 @@ const app = new Hono().post(
       return c.json({ error: "Internal server error" }, 500);
     }
   }
-);
+)
+.patch(
+  "/edit/:listingId",
+  async (c) => {
+    const user = await serverUser();
+    if (!user) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    const listingId= c.req.param("listingId");
+    if (!listingId) {
+      return c.json({ error: "Listing id is required !" }, 400);
+    }
+    
+    const body = await c.req.json()
+    console.log(body)
+    try {
+      const res = await db.listing.update({
+        where: {
+          id: listingId,
+        },
+        data: {
+          ...body,
+        },
+      });
+      return c.json(res, 201);
+    } catch (error) {
+      console.error(error);
+      return c.json({ error: "Internal server error" }, 500);
+    }
+  }
+)
+;
 
 export default app;
