@@ -3,11 +3,13 @@ import { Hono } from 'hono';
 import {handle} from 'hono/vercel'
 import auth from '@/features/auth/server/route';
 import listings from '@/features/listings/server/route';
+import inquiries from '@/features/inquiries/server/route';
 
 const app = new Hono().basePath('/api');
 const routes = app
 .route('/auth', auth)
 .route('/listings',listings)
+.route('/inquiries',inquiries)
 
 
 export const GET = handle(app)

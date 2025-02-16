@@ -16,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { EyeIcon, Trash2Icon } from "lucide-react";
+import { AwardIcon, EyeIcon, Trash2Icon } from "lucide-react";
 import { ProfileImageUpload } from "./profile-image-upload";
 import { RemoveProfileImage } from "@/actions/remove-profile-image";
 import axios from "axios";
@@ -30,11 +30,17 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useConfirm } from "@/hooks/use-confirm";
+import { generateToken } from "@/lib/generateToken";
+import { sendVerificationEmail } from "@/lib/mail";
 export const ProfileEditForm = ({ user }: { user: User }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+  const [ConfirmDialog,confirm] = useConfirm("Delete user",
+    "Deleting this account means deleting everything associated witn this account")
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState<boolean>(false);
   const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
+  const [isVeryfingEmail,setIsVeryfingEmail] = useState<boolean>(false);
   const [isChangingPassword, setIsChangingPassword] = useState<boolean>(false);
   const form = useForm<UserSchemaType>({
     resolver: zodResolver(UserSchema),
@@ -67,6 +73,8 @@ export const ProfileEditForm = ({ user }: { user: User }) => {
   };
   const deleteUser = async (userId: string) => {
     try {
+      const ok = await confirm()
+      if(!ok) return
       const res = await axios.delete(`/api/auth/delete/${userId}`);
       if (res.status === 200) {
         toast.success("User deleted successfully");
@@ -114,8 +122,29 @@ export const ProfileEditForm = ({ user }: { user: User }) => {
     }
     setIsImageUploading(false);
   };
+  const onVerifyEmail = async()=>{
+    try {
+      setIsVeryfingEmail(true)
+      if(!user.email) return
+      const verificationToken = await generateToken(user.email)
+      await sendVerificationEmail(verificationToken.email,verificationToken.token)
+      return toast.success("Check your email inbox,we have sent you a link to verify your email",{
+        style:{
+         background:"green",
+         color:"whitesmoke",
+        }
+      })
+    } catch (error) {
+       console.error(error)
+       toast.error("Oopsy something went wrong while trying to verify your email !")
+    }finally{
+     setIsVeryfingEmail(false)
+    }
+   
+  }
   return (
     <>
+    <ConfirmDialog />
       <Form {...form}>
         <form>
           <div className="relative w-full h-full flex flex-col gap-y-5">
@@ -214,7 +243,10 @@ export const ProfileEditForm = ({ user }: { user: User }) => {
                     {!user.emailVerified && (
                       <Button 
                       variant={"link"}
+                      type="button"
+                      disabled={isVeryfingEmail}
                       className=" bg-rose-100"
+                      onClick={onVerifyEmail}
                       >
                         <p className="text-sm font-light text-neutral-900/95">
                           Verify your email address !
@@ -342,9 +374,10 @@ export const ProfileEditForm = ({ user }: { user: User }) => {
               <CardContent>
                 <Button
                   variant={"destructive"}
+                  type="button"
                   className="font-bold flex items-center justify-center gap-x-2  "
                   //  Have a confirmation dialog
-                  onClick={() => deleteUser(user.id)}
+                  onClick={()=>deleteUser(user.id)}
                 >
                   <Trash2Icon className="size-7" />
                   Delete Account

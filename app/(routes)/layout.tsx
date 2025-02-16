@@ -12,7 +12,6 @@ const ListingLayout = async({children}:{
   if(!user) redirect('/auth/sign-in')
   return (
     <div className=' min-h-screen w-full'>
-       <Navbar user={user}/>
         {children}
     </div>
   )

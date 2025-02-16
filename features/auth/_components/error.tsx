@@ -3,8 +3,9 @@ import { FaExclamationTriangle } from 'react-icons/fa'
 export const ErrorMessage = ({
     message
 }:{
-    message:string
+    message:string |undefined
 }) => {
+  if(!message) return 
   return (
     <div
     className="  p-4 bg-rose-600/25 text-sm font-semibold font-mono text rounded-md flex items-center

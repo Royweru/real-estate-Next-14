@@ -94,7 +94,7 @@ export const CreateListingForm = ({
     }
 
   };
-
+const isSubmitting = form.formState.isSubmitting
   return (
     <div className="w-full min-h-screen flex flex-col gap-y-6 p-4">
       <div className="flex flex-col gap-y-2">
@@ -596,7 +596,7 @@ export const CreateListingForm = ({
                       {field.value &&(
                            <div className="relative mt-4">
                            <video 
-                             className="w-full rounded-lg"
+                             className="w-full rounded-lg max-h-96"
                              controls
                              src={field.value}
                            />
@@ -627,6 +627,7 @@ export const CreateListingForm = ({
               Previous
             </Button>
             <Button
+              disabled={isSubmitting}
               type={currentPage === 3 ? "submit" : "button"}
               onClick={() => {
                 if (currentPage < 3) {

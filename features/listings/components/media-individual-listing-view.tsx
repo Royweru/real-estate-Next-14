@@ -21,7 +21,7 @@ export const MediaIndividualListingView = (
           const containerClasses =
             i === 3
               ? "lg:col-span-8 md:col-span-6 col-span-3 row-span-3 h-[300px] relative overflow-hidden rounded-lg"
-              : "lg:col-span-4 md:col-span-3 col-span-2 row-span-2 h-[200px] relative overflow-hidden rounded-lg";
+              : "lg:col-span-4 md:col-span-3 col-span-3 row-span-2 h-[200px] relative overflow-hidden rounded-lg";
           return (
             <div key={img.url} className={containerClasses}>
               <Image src={img.url} alt="Listing image" fill className="object-cover" />

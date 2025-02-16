@@ -1,8 +1,10 @@
-export const publicRoutes = ["/","/browse"];
+export const publicRoutes = ["/","/browse","/listings/*"];
 
-export const listingViewRoute= "/listing/view"
+export const listingViewRoute= "/listing"
 
-export const authRoute = "/auth"
+export const authRoutes =['/auth/sign-in',
+ '/auth/sign-up'
+]
 
 export const apiAuthPrefix = "/api/auth";
 

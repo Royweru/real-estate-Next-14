@@ -8,7 +8,7 @@ import { ListingsDisplay } from "@/features/listings/components/listings-display
 import { getLocations } from "@/actions/fetchLocations";
 import { fetchPropertiesManagement } from "@/actions/fetchProperties";
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 0
 
 const PropertiesPage = async ({
   searchParams,

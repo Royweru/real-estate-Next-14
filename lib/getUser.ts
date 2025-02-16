@@ -21,6 +21,9 @@ export const getUserById = async (id: string) => {
       where: {
         id: id,
       },
+      include:{
+        listings:true
+      }
     });
     return user;
   } catch (error) {

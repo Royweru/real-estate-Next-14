@@ -1,7 +1,9 @@
 import React from 'react'
 import ListingViewClient from './listing-view-client'
 import { fetchListing } from '@/actions/fetchProperty'
-const ListingViewPage = async({params}:{
+const ListingViewPage = async({
+  params
+}:{
   params:{listingId:string}
 }) => {
   const listing = await fetchListing(params.listingId)
