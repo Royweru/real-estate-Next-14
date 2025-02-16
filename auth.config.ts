@@ -1,7 +1,7 @@
 import Credentials from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth";
 
-import bcyrpt from 'bcryptjs'
+import bcrypt from 'bcrypt'
 import { getUserByEmail } from "./lib/getUser";
 import { LoginSchema } from "./features/auth/schemas";
 
@@ -21,7 +21,7 @@ export default {
 
           if (!user || !user.hashedPwd) return null;
       
-          const confirmPwd = await bcyrpt.compare(password,user.hashedPwd)
+          const confirmPwd = await bcrypt.compare(password,user.hashedPwd)
 
           if(confirmPwd){
             return user
