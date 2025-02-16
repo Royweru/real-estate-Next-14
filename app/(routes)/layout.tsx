@@ -1,5 +1,4 @@
 
-import { Navbar } from '@/components/navbar'
 import { serverUser } from '@/lib/serverUser'
 import { redirect } from 'next/navigation'
 

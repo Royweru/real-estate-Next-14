@@ -32,7 +32,7 @@ export const Footer  =() => {
             <div className="max-w-lg sm:mx-auto sm:text-center">
                 <img src="/logo.png" className="w-32 sm:mx-auto" />
                 <p className="leading-relaxed mt-2 text-[15px]">
-                   Apartimenti is a long term project that is aimed at making peoples' dreams of finding living spaces come to life and connecting those who want to sell and rent their properties to their desired clients.
+                   Apartimenti is a long term project that is aimed at making peoples dreams of finding living spaces come to life and connecting those who want to sell and rent their properties to their desired clients.
                 </p>
             </div>
             <ul className="items-center justify-center mt-8 space-y-5 sm:flex sm:space-x-4 sm:space-y-0">
@@ -50,7 +50,7 @@ export const Footer  =() => {
             </ul>
             <div className="mt-8 items-center justify-between sm:flex">
                 <div className="mt-4 sm:mt-0">
-                    &copy; 2025 Float UI All rights reserved.
+                    &copy; Apartamenti all rights reserved .
                 </div>
                 <div className="mt-6 sm:mt-0">
                     <ul className="flex items-center space-x-4">
