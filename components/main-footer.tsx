@@ -12,16 +12,16 @@ export const Footer  =() => {
         },
       
         {
-            href: 'javascript:void()',
+            href: '/team',
             name: 'Team'
         },
         {
-            href: 'javascript:void()',
+            href: '/careers',
             name: 'Careers'
         },
 
         {
-            href: 'javascript:void()',
+            href: '/support',
             name: 'Suuport'
         }
     ]
