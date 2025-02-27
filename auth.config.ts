@@ -1,15 +1,13 @@
+// auth.config.ts
 import Credentials from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth";
-
-import bcrypt from 'bcryptjs'
-import { getUserByEmail } from "./lib/getUser";
 import { LoginSchema } from "./features/auth/schemas";
+import { getUserByEmail } from "./lib/getUser";
+import { comparePasswords } from "./lib/password";
 
 // Notice this is only an object, not a full Auth.js instance
-
 export default {
   providers: [
-    
     Credentials({
       async authorize(credentials) {
         const validatedFields = LoginSchema.safeParse(credentials);
@@ -21,14 +19,14 @@ export default {
 
           if (!user || !user.hashedPwd) return null;
       
-          const confirmPwd = await bcrypt.compare(password,user.hashedPwd)
+          const confirmPwd = await comparePasswords(password, user.hashedPwd);
 
-          if(confirmPwd){
-            return user
+          if(confirmPwd) {
+            return user;
           }
         }
 
-        return null
+        return null;
       },
     }),
   ],
