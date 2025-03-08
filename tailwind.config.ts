@@ -34,7 +34,8 @@ const config: Config = {
   			}
   		},
   		fontFamily: {
-  			montserrat: 'var(--font-montserrat)'
+  			montserrat: 'var(--font-montserrat)',
+			opensans :'var(--font-sans)'
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

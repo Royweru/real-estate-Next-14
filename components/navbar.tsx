@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { PlusIcon } from "lucide-react";
 import { logout } from "@/actions/logout";
+import { usePathname } from "next/navigation";
 
 export const Navbar = ({ 
   user
@@ -23,24 +24,8 @@ export const Navbar = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
  const signout = () =>logout()
+ const pathname = usePathname()
   const subMenu1 = [
-    {
-      id: 1,
-      label: "Apartments for sale",
-      onClick: () => {},
-    },
-    {
-      id: 2,
-      label: "Houses for rent",
-      onClick: () => {},
-    },
-    {
-      id: 3,
-      label: "Commercial buildings for rent ",
-      onClick: () => {},
-    },
-  ];
-  const subMenu2 = [
     {
       id: 1,
       label: "Apartments for sale",
@@ -53,7 +38,24 @@ export const Navbar = ({
     },
     {
       id: 3,
-      label: "Commercial buildings for sale",
+      label: "Commercial buildings for sale ",
+      onClick: () => {},
+    },
+  ];
+  const subMenu2 = [
+    {
+      id: 1,
+      label: "Apartments for rent",
+      onClick: () => {},
+    },
+    {
+      id: 2,
+      label: "Houses for rent",
+      onClick: () => {},
+    },
+    {
+      id: 3,
+      label: "Commercial buildings for rent",
       onClick: () => {},
     },
   ];
@@ -74,18 +76,19 @@ export const Navbar = ({
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
+ const isHidden = pathname === '/'
   return (
     <nav
       ref={navRef}
-      className="bg-white w-full top-0 z-20 transition-all duration-300 text-base rounded-b"
+      className={`bg-white w-full top-0 z-20 transition-all duration-300 text-base
+         rounded-b-md ${isHidden &&' hidden'}`}
     >
-      <div className="max-w-5xl  mx-auto px-4 relative py-2 sm:px-6 lg:px-8">
+      <div className="max-w-7xl  mx-auto px-4 relative py-2 sm:px-8 lg:px-12">
         <div className="flex relative w-full justify-between items-center">
           {/* Logo / Brand */}
           <div className="flex-shrink-0">
             <a href="/">
-              <img src="/logo.png" alt="" height={60} width={100} />
+              <img src="/logo.png" alt="" height={52} width={70} />
             </a>
           </div>
 
@@ -155,6 +158,8 @@ export const Navbar = ({
               Contact
             </a>
           </div>
+
+          {/*user button */}
           {user ? (
             <div className="hidden md:flex ">
               <DropdownMenu>
@@ -233,6 +238,7 @@ export const Navbar = ({
         
             </div>
           )}
+          
           {/* Mobile Menu Button */}
           <div className="md:hidden">
             <button

@@ -38,6 +38,7 @@ export default async function Home() {
    <>
   
     <Hero 
+    user = {user}
      propertyTypes = {propertyTypes}
      categories = {categories}
      locations = {locationsWithListings}

@@ -10,10 +10,11 @@ export const ListingCardClient = ({ listing }: { listing: ListingType }) => {
     <div
       key={listing?.id}
       onClick={() => (window.location.href = `/listings/${listing?.id}/view`)}
-      className="col-span-1 relative hover:cursor-pointer bg-white shadow-sm transition-transform transform hover:scale-105"
+      className="col-span-1 relative hover:cursor-pointer bg-white 
+      shadow-sm transition-transform transform hover:scale-105"
     >
       <div className="flex w-full p-0 flex-col gap-y-2">
-        <div className="p-0 w-full relative h-52">
+        <div className="p-0 w-full relative h-56">
           <Image
             fill
             className="bg-cover bg-center"
