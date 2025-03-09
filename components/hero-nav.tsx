@@ -12,6 +12,7 @@ import {
   import { Button } from './ui/button';
   import { logout } from '@/actions/logout';
 import { Listing, User } from '@prisma/client';
+import { MobileMenu } from './mobile-menu';
 export const HeroNav = ({
     user
 }:{
@@ -19,6 +20,7 @@ export const HeroNav = ({
         listings:Listing[]
     }| null
 }) => {
+  // const [mobileMenuOpen,setMobileMenuOpen] = useState(false)
     const subMenu1 = [
         {
           id: 1,
@@ -213,7 +215,9 @@ export const HeroNav = ({
         
             </div>
           )}
-          
+
+          {/* mobile menu button */}
+          <MobileMenu />
             </div>
         </div>
     </nav>

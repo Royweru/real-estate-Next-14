@@ -3,7 +3,7 @@ import { ListingType } from "@/features/listings/types";
 import React from "react";
 import { SectionHeader } from "./section-header";
 
-export const FeaturedProperties = ({
+export const FeaturedPropertiesBuy = ({
   listings,title,subTitle
 }: {
   listings: ListingType[];

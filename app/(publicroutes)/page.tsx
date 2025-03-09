@@ -5,13 +5,16 @@ import { FetchTypes } from "@/actions/fetchTypes";
 import { GetListingsBuy } from "@/actions/getListingsBuy";
 import { GetListingsRent } from "@/actions/getListingRent";
 import { Cities } from "@/components/cities";
-import { FeaturedProperties } from "@/components/featured-properties-buy";
+import { FeaturedProperties } from "@/components/featured";
 import { Hero } from "@/components/hero";
 
 import { serverUser } from "@/lib/serverUser";
 
 import { fetchStatus } from "@/actions/fetchStatus";
 import { BlogsSection } from "@/components/blogs";
+import { fetchPropertiesManagement } from "@/actions/fetchProperties";
+import { FetchListings } from "@/actions/fetchListings";
+import { WhyUs } from "@/components/why-us";
 
 export default async function Home() {
  const [
@@ -21,7 +24,8 @@ export default async function Home() {
   categories,
   locationsWithListings,
   buyProperties,
-  rentProperties
+  rentProperties,
+  properties
  ]= await Promise.all([
 
     serverUser(),
@@ -30,7 +34,8 @@ export default async function Home() {
     fetchCategories(),
     fetchLocationsWithListings(),
     GetListingsBuy(),
-    GetListingsRent()
+    GetListingsRent(),
+    FetchListings()
  ])
 
 
@@ -43,6 +48,10 @@ export default async function Home() {
      categories = {categories}
      locations = {locationsWithListings}
     />
+    <FeaturedProperties 
+     listings  = {properties}
+    />
+    <WhyUs  />
     {/* <SearchFilters 
       locations={locationsWithListings}
       categories={categories}
@@ -51,16 +60,7 @@ export default async function Home() {
    
     /> */}
     <Cities locations={locationsWithListings}/>
-    <FeaturedProperties 
-      listings={buyProperties}
-      title="Top properties on sale right now"
-      subTitle="Find some of the best properties on sale right now"
-    />
-    <FeaturedProperties 
-      listings={rentProperties}
-      title="Top properties to rent"
-      subTitle="Here are some of the best properties to rent "
-    />
+     
     <BlogsSection />
    </>
   );
