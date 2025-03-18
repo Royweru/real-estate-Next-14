@@ -12,13 +12,7 @@ export const CitiesGrid = ({
   const [currentPage, setCurrentPage] = useState(0);
   const isMobile = useMedia("(max-width: 540px)");
   if(!data){
-    return(
-      <div className=" w-full flex items-center  justify-center font-semibold text-3xl">
-           <h2 className=" text-4xl text-accent-desructive">
-               No city added in the database so far
-           </h2>
-      </div>
-    )
+    return
   }
   const itemsPerPage = isMobile ? 2 : 3;
   const totalPages = Math.ceil(data.length / itemsPerPage);
@@ -39,18 +33,20 @@ export const CitiesGrid = ({
         {currentItems.map((item, idx) => (
           <div
             className="
-           col-span-1 rounded-xl
+           col-span-1 shadow-sm
           "
             key={idx}
           >
             <div
-              className=" relative w-full h-full min-h-[400px] bg-center bg-cover rounded-xl"
+              className=" relative w-full h-full min-h-[400px] bg-center bg-cover "
               style={{
                 backgroundImage: `url(${item.properties[0]?.images[0]?.url})`,
               }}
             >
-              <div className=" inset-0 absolute bg-black bg-opacity-50 flex flex-col gap-y-1.5 items-start justify-end rounded-xl">
-                <div className=" lg:pl-2.5 pl-1.5  flex flex-col gap-y-1.5">
+              <div className=" inset-0 bg-gradient-to-t from-black/50 to-transparent absolute"></div>
+              <div className=" relative h-full flex flex-col gap-y-1.5 items-start justify-end lg:p-6 p-4
+              ">
+                <div className="  flex flex-col gap-y-1.5">
                   <h4 className=" font-semibold md:text-2xl text-xl font-nunito text-white ">
                     {item?.city}
                   </h4>

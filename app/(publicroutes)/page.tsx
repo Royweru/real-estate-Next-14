@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { fetchCategories } from "@/actions/fetchCategories";
-import { fetchLocationsWithListings } from "@/actions/fetchLocations";
+import { fetchLocations } from "@/actions/fetchLocations";
 import { FetchTypes } from "@/actions/fetchTypes";
 import { GetListingsBuy } from "@/actions/getListingsBuy";
 import { GetListingsRent } from "@/actions/getListingRent";
@@ -22,7 +22,7 @@ export default async function Home() {
   propertyTypes,
   propertyStatus,
   categories,
-  locationsWithListings,
+  locations,
   buyProperties,
   rentProperties,
   properties
@@ -32,12 +32,12 @@ export default async function Home() {
     FetchTypes(),
     fetchStatus(),
     fetchCategories(),
-    fetchLocationsWithListings(),
+    fetchLocations(),
     GetListingsBuy(),
     GetListingsRent(),
     FetchListings()
  ])
-
+ const locationsWithListings = locations.filter((location)=>location.properties.length >0)
 
   return (
    <>
