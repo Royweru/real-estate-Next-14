@@ -33,7 +33,8 @@ export const CitiesGrid = ({
         {currentItems.map((item, idx) => (
           <div
             className="
-           col-span-1 shadow-sm
+           col-span-1 shadow-sm cursor-pointer hover:scale-105 
+           transition-transform duration-300
           "
             key={idx}
           >

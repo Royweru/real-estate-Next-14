@@ -11,10 +11,12 @@ import { Hero } from "@/components/hero";
 import { serverUser } from "@/lib/serverUser";
 
 import { fetchStatus } from "@/actions/fetchStatus";
-import { BlogsSection } from "@/components/blogs";
+
 import { fetchPropertiesManagement } from "@/actions/fetchProperties";
 import { FetchListings } from "@/actions/fetchListings";
 import { WhyUs } from "@/components/why-us";
+import { FeaturedPropertiesRent } from "@/components/featured-properties-rent";
+import { PropertyTypes } from "@/components/property-types";
 
 export default async function Home() {
  const [
@@ -60,8 +62,11 @@ export default async function Home() {
    
     /> */}
     <Cities locations={locationsWithListings}/>
-     
-    <BlogsSection />
+     <FeaturedPropertiesRent
+      title="Top properties to rent"
+     listings={rentProperties}/>
+     <PropertyTypes />
+    
    </>
   );
 }
