@@ -37,10 +37,11 @@ export const WhyUs = () => {
           sub="Reasons why we are the best realtors"
         />
         <div className=" w-full grid  max-w-6xl grid-cols-2 md:grid-cols-4 gap-1.5 md:gap-3">
-          {reasons.map((reason) => (
+          {reasons.map((reason, idx) => (
             <div
+              key={idx}
               className=" col-span-1 flex flex-col items-center justify-center
-             lg:gap-y-3 md:gap-y-2 gap-y-1.5 bg-white shadow-sm   p-4"
+             lg:gap-y-3 md:gap-y-2 gap-y-1.5 bg-white shadow-sm  p-4"
             >
               <div className=" relative lg:size-36 shrink-0 md:size-32 sm:size-28 size-24 ">
                 <Image

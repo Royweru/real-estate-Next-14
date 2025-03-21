@@ -5,7 +5,7 @@ import { fetchCategories } from "@/actions/fetchCategories";
 import { fetchStatus } from "@/actions/fetchStatus";
 import { PropertiesManagementFilter } from "@/features/listings/components/properties-management-filter";
 import { ListingsDisplay } from "@/features/listings/components/listings-display";
-import { getLocations } from "@/actions/fetchLocations";
+import { fetchLocations } from "@/actions/fetchLocations";
 import { fetchPropertiesManagement } from "@/actions/fetchProperties";
 
 export const revalidate = 0
@@ -26,7 +26,7 @@ const PropertiesPage = async ({
     fetchCategories(),
     FetchTypes(),
     fetchStatus(),
-    getLocations(),
+    fetchLocations(),
     fetchPropertiesManagement({
       statusId,
       locationId,

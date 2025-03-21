@@ -1,7 +1,7 @@
 
 import { CreateListingForm } from "@/features/listings/components/create-listing-form"
 import { EditListingForm } from "../../../../features/listings/components/edit-listing-form"
-import { getLocations } from "@/actions/fetchLocations"
+import { fetchLocations } from "@/actions/fetchLocations"
 import { fetchStatus } from "@/actions/fetchStatus"
 import { FetchTypes } from "@/actions/fetchTypes"
 import { fetchCategories } from "@/actions/fetchCategories"
@@ -12,7 +12,7 @@ import { fetchListing } from "@/actions/fetchProperty"
 
 const CreateListingAgent = async ({params}:{params:{listingId:string}}) => {
    const activeUser= await serverUser()
-    const locations = await getLocations()
+    const locations = await fetchLocations()
     const listingStatus = await fetchStatus()
     const listingTypes = await FetchTypes()
     const categories = await fetchCategories()
