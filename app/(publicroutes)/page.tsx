@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { fetchCategories } from "@/actions/fetchCategories";
 import { fetchLocations } from "@/actions/fetchLocations";
@@ -17,6 +18,7 @@ import { FetchListings } from "@/actions/fetchListings";
 import { WhyUs } from "@/components/why-us";
 import { FeaturedPropertiesRent } from "@/components/featured-properties-rent";
 import { PropertyTypes } from "@/components/property-types";
+import { BlogsCTA } from "@/components/blogs-cta";
 
 export default async function Home() {
  const [
@@ -65,8 +67,8 @@ export default async function Home() {
      <FeaturedPropertiesRent
       title="Top properties to rent"
      listings={rentProperties}/>
-     <PropertyTypes />
-    
+     <PropertyTypes propertyTypes={propertyTypes as any} />
+    <BlogsCTA />
    </>
   );
 }

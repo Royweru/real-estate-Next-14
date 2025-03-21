@@ -80,7 +80,7 @@ export const Navbar = ({
   return (
     <nav
       ref={navRef}
-      className={`bg-white w-full top-0 z-20 transition-all duration-300 text-base
+      className={`bg-blue-powder text-white w-full top-0 z-20 transition-all duration-300 text-base
          rounded-b-md ${isHidden &&' hidden'}`}
     >
       <div className="max-w-7xl  mx-auto px-4 relative py-2 sm:px-8 lg:px-12">
@@ -100,16 +100,16 @@ export const Navbar = ({
                 className="inline-flex items-center px-3 py-2 rounded-md 
                 transition-colors hover:bg-blue-100 focus:outline-none"
               >
-                <span className=" text-blue-france ">For sale</span>
+                <span className=" font-semibold ">For sale</span>
                 <svg
-                  className="ml-1 h-4 w-4 fill-current text-blue-france"
+                  className="ml-1 h-4 w-4 fill-current "
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z" />
                 </svg>
               </button>
-              <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-200 z-10">
+              <div className="absolute left-0 mt-2 w-40 bg-accent-deepNavy border border-gray-200 rounded-md shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-200 z-10">
                 {subMenu1.map((item) => (
                   <a
                     key={item.id}
@@ -126,16 +126,16 @@ export const Navbar = ({
                 type="button"
                 className="inline-flex items-center px-3 py-2 rounded-md transition-colors hover:bg-blue-100 focus:outline-none"
               >
-                <span className=" text-blue-france">For rent</span>
+                <span className=" font-semibold">For rent</span>
                 <svg
-                  className="ml-1 h-4 w-4 fill-current text-blue-france"
+                  className="ml-1 h-4 w-4 fill-current text-white"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z" />
                 </svg>
               </button>
-              <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-200 z-10">
+              <div className="absolute left-0 mt-2 w-40 bg-accent-deepNavy border border-gray-200 rounded-md shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-200 z-10">
                 {subMenu2.map((item) => (
                   <a
                     key={item.id}

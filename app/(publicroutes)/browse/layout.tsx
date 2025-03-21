@@ -1,5 +1,5 @@
 import { fetchCategories } from '@/actions/fetchCategories'
-import { fetchLocationsWithListings } from '@/actions/fetchLocations'
+import { fetchLocations } from '@/actions/fetchLocations'
 import { fetchStatus } from '@/actions/fetchStatus'
 import { FetchTypes } from '@/actions/fetchTypes'
 import { SearchFilters } from '@/components/search-filters'
@@ -11,7 +11,7 @@ const BrowseLayout =async ({
     children:React.ReactNode
 }) => {
     const [locations,status,propertyTypes,categories] = await Promise.all([
-         fetchLocationsWithListings(),
+         fetchLocations(),
          fetchStatus(),
          FetchTypes(),
          fetchCategories()

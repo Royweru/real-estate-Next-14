@@ -15,7 +15,7 @@ export const PropertyTypeCard = ({
     const router = useRouter()
   return (
     <div 
-    className=' col-span-1 rounded-md relative overflow-hidden'
+    className=' col-span-1 rounded-md relative overflow-hidden shadow-sm cursor-pointer hover:scale-105 transition-transform'
     onClick={() =>router.push(`/browse?propertyType=${propertyType.title}`)}
     >
        <div className=' bg-center w-full lg:h-[400px] md:h-[350px] h-[280px] bg-cover' style={{backgroundImage: `url(${propertyType.image})`}}>
