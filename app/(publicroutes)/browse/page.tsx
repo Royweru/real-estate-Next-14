@@ -53,7 +53,9 @@ const BrowsePage = async ({
         <div className="w-full min-h-screen text-text-blackgrey md:pt-10 pt-2">
           <div className="max-w-3xl font-semibold font-mono">
             <h3 className="text-2xl text-zinc-800 leading-tight">
-              It looks like we couldn&apos;t find any listings that fit your criteria. Try adjusting your filters or exploring different options to discover your perfect home! 🏡✨
+              It looks like we couldn&apos;t find any listings that fit your criteria. 
+              Try adjusting your filters or exploring different options to discover your perfect home! 
+              🏡✨
             </h3>
           </div>
         </div>
