@@ -69,7 +69,7 @@ async function main() {
 
   console.log('Inserting property status....')
   const PropertyStatus = [
-    "Active","Pending","Closed"
+    "Active","Pending","Closed","Rejected"
   ]
 
   for (const status of PropertyStatus) {

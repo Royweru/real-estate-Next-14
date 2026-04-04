@@ -98,12 +98,15 @@ export const EditListingForm = ({
       toast.error("Ooopsy seems like something went wrong");
     }
   };
-  if (!data) return;
-  <div className=" w-full min-h-screen justify-center items-center font-bold">
-    <h1 className="text-4xl max-w-md tracking-normal leading-relaxed">
-      Sorry, looks like there is no listing found !
-    </h1>
-  </div>;
+  if (!data) {
+    return (
+      <div className=" w-full min-h-screen flex justify-center items-center font-bold">
+        <h1 className="text-4xl max-w-md tracking-normal leading-relaxed">
+          Sorry, looks like there is no listing found !
+        </h1>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full min-h-screen flex flex-col gap-y-6 p-4">
@@ -662,10 +665,30 @@ export const EditListingForm = ({
               Previous
             </Button>
             <Button
+              disabled={form.formState.isSubmitting}
               type={currentPage === 3 ? "submit" : "button"}
-              onClick={() => {
-                if (currentPage < 3) {
-                  setCurrentPage((prev) => Math.min(3, prev + 1));
+              onClick={async () => {
+                if (currentPage === 1) {
+                  const isValid = await form.trigger([
+                    "title",
+                    "typeId",
+                    "priceType",
+                    "purchasePrice",
+                    "rentalPrice",
+                    "locationId",
+                    "area",
+                  ]);
+                  if (isValid) setCurrentPage(2);
+                } else if (currentPage === 2) {
+                  const isValid = await form.trigger([
+                    "statusId",
+                    "categoryId",
+                    "bedrooms",
+                    "bathrooms",
+                    "description",
+                    "amenities",
+                  ]);
+                  if (isValid) setCurrentPage(3);
                 }
               }}
             >

@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { createListingSchema } from "../schemas";
-import { Category, Type, Status, Location, Amenity } from "@prisma/client";
+import { Category, Type, Location, Amenity } from "@prisma/client";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -35,14 +35,12 @@ import { useRouter } from "next/navigation";
 
 interface CreateListingFormProps {
   locations: Location[];
-  status: Status[];
   types: Type[];
   categories: Category[];
   amenities: Amenity[];
 }
 export const CreateListingForm = ({
   locations,
-  status,
   types,
   categories,
   amenities,
@@ -59,7 +57,6 @@ export const CreateListingForm = ({
       purchasePrice: null,
       rentalPrice: null,
       locationId: "",
-      statusId: "",
       typeId: "",
       categoryId: "",
       images: [],
@@ -78,7 +75,7 @@ export const CreateListingForm = ({
       console.log(values);
       const res = await axios.post('/api/listings/create',values)
       if(res.status ===201) {
-        toast.success("Listing created successfully!!",{
+        toast.success("Listing is being reviewed. It will be public upon admin approval.",{
           style:{
             backgroundColor:"green",
             color: "#ffff",
@@ -362,32 +359,6 @@ const isSubmitting = form.formState.isSubmitting
                 Property Details
               </h3>
               <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="statusId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select status" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {status.map((s) => (
-                              <SelectItem key={s.id} value={s.id}>
-                                {s.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
 
                 <FormField
                   control={form.control}
@@ -629,9 +600,13 @@ const isSubmitting = form.formState.isSubmitting
             <Button
               disabled={isSubmitting}
               type={currentPage === 3 ? "submit" : "button"}
-              onClick={() => {
-                if (currentPage < 3) {
-                  setCurrentPage((prev) => Math.min(3, prev + 1));
+              onClick={async () => {
+                if (currentPage === 1) {
+                  const isValid = await form.trigger(["title", "typeId", "priceType", "purchasePrice", "rentalPrice", "locationId", "area"]);
+                  if (isValid) setCurrentPage(2);
+                } else if (currentPage === 2) {
+                  const isValid = await form.trigger(["categoryId", "bedrooms", "bathrooms", "description", "amenities"]);
+                  if (isValid) setCurrentPage(3);
                 }
               }}
             >

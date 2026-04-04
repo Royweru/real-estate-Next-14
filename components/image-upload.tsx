@@ -38,7 +38,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
 
 
       <CldUploadWidget 
-        onUpload={onUpload} 
+        onSuccess={onUpload} 
         uploadPreset="rentals"
         options={{
           maxFiles: 10,

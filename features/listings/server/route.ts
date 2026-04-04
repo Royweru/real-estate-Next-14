@@ -23,7 +23,6 @@ const app = new Hono()
       purchasePrice,
       rentalPrice,
       locationId,
-      statusId,
       typeId,
       categoryId,
       images,
@@ -36,7 +35,6 @@ const app = new Hono()
       !title ||
       !description ||
       !locationId ||
-      !statusId ||
       !typeId ||
       !categoryId ||
       !bedrooms ||
@@ -55,13 +53,19 @@ const app = new Hono()
       return c.json("Image is required", 400);
     }
     try {
+      const pendingStatus = await db.status.findFirst({
+        where: { name: "Pending" }
+      });
+      if (!pendingStatus) {
+        return c.json({ error: "Pending status missing in database" }, 500);
+      }
       const listing = await db.listing.create({
         data: {
           userId: user.id,
           title,
           typeId,
           categoryId,
-          statusId,
+          statusId: pendingStatus.id,
           locationId,
           description,
           videoUrl,
@@ -129,6 +133,54 @@ const app = new Hono()
     }
   }
 )
+  .patch(
+  '/approve/:listingId',
+  async (c) => {
+    const user = await serverUser();
+    if (!user || !user.superAdmin) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+    const listingId = c.req.param("listingId");
+    if (!listingId) return c.json({ error: "Listing id is required !" }, 400);
+
+    try {
+      const activeStatus = await db.status.findFirst({ where: { name: "Active" } });
+      if (!activeStatus) return c.json({ error: "Active status missing" }, 500);
+      const res = await db.listing.update({
+        where: { id: listingId },
+        data: { statusId: activeStatus.id },
+      });
+      return c.json(res, 200);
+    } catch (error) {
+      console.error(error);
+      return c.json({ error: "Internal server error" }, 500);
+    }
+  }
+)
+  .patch(
+  '/reject/:listingId',
+  async (c) => {
+    const user = await serverUser();
+    if (!user || !user.superAdmin) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+    const listingId = c.req.param("listingId");
+    if (!listingId) return c.json({ error: "Listing id is required !" }, 400);
+
+    try {
+      const rejectedStatus = await db.status.findFirst({ where: { name: "Rejected" } });
+      if (!rejectedStatus) return c.json({ error: "Rejected status missing" }, 500);
+      const res = await db.listing.update({
+        where: { id: listingId },
+        data: { statusId: rejectedStatus.id },
+      });
+      return c.json(res, 200);
+    } catch (error) {
+      console.error(error);
+      return c.json({ error: "Internal server error" }, 500);
+    }
+  }
+)
 .delete('/delete/:listingId',
   async(c)=>{
     const user = await serverUser();
@@ -160,6 +212,28 @@ const app = new Hono()
     }
   }
 )
+
+.get('/pending', async (c) => {
+  const user = await serverUser();
+  if (!user || user.role !== "ADMIN") return c.json({ error: "Unauthorized" }, 401);
+  try {
+    const listings = await db.listing.findMany({
+      where: { status: { name: 'Pending' } },
+      include: {
+        images: true,
+        amenities: true,
+        category: true,
+        status: true,
+        type: true,
+        location: true
+      },
+    });
+    return c.json({ listings }, 200);
+  } catch (err) {
+    console.error(err);
+    return c.json({ error: "Internal server error" }, 500);
+  }
+})
 .get('/search', async (c) => {
   // Retrieve query parameters
   const title = c.req.query('title'); // Case insensitive match on title
@@ -174,7 +248,11 @@ const app = new Hono()
   const maxBathrooms = c.req.query('maxBathrooms');
 
   // Build the dynamic "where" clause for Prisma
-  const where: any = {};
+  const where: any = {
+    status: {
+      name: 'Active',
+    },
+  };
 
   if (title) {
     where.title = { contains: title, mode: 'insensitive' };

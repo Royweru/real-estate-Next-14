@@ -27,6 +27,7 @@ model User {
   hashedPwd String
   accounts      Account[]
   listings Listing[]
+  superAdmin SuperAdmin?
 
   @@map("users")
 }
@@ -113,8 +114,8 @@ model Listing{
   categoryId String
   category Category @relation(fields: [categoryId],references: [id],onDelete:Cascade)
 
-  statusId String
-  status Status @relation(fields: [statusId],references: [id],onDelete: SetNull)
+  statusId String?
+  status Status? @relation(fields: [statusId],references: [id],onDelete: SetNull)
   
   title String
   description String?
@@ -155,4 +156,11 @@ model Inquiry{
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model SuperAdmin {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
 }

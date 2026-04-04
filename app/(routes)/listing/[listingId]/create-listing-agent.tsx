@@ -34,7 +34,6 @@ const CreateListingAgent = async ({ params }: { params: { listingId: string } })
       {params.listingId === 'new' ? (
         <CreateListingForm
           locations={locations}
-          status={listingStatus}
           types={listingTypes}
           categories={categories}
           amenities={amenities}

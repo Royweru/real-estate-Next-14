@@ -8,7 +8,7 @@ export const createListingSchema = z.object({
     purchasePrice: z.number().nullable().optional(),
     rentalPrice: z.number().nullable().optional(),
     locationId: z.string().min(1),
-    statusId: z.string().min(1),
+    statusId: z.string().optional(),
     typeId: z.string().min(1),
     categoryId: z.string().min(1),
     images: z.array(z.object({
@@ -20,13 +20,22 @@ export const createListingSchema = z.object({
 
     amenities: z.array(z.string()).min(1, "Select at least one amenity"),
     // isFeatured: z.boolean().default(false).optional(),
-}).refine((data) => {
+}).superRefine((data, ctx) => {
     if (data.priceType === "purchase") {
-        return data.purchasePrice && data.purchasePrice > 0;
+        if (!data.purchasePrice || data.purchasePrice <= 0) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "You must provide a valid purchase price",
+                path: ["purchasePrice"],
+            });
+        }
     } else {
-        return data.rentalPrice && data.rentalPrice > 0;
+        if (!data.rentalPrice || data.rentalPrice <= 0) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "You must provide a valid rental price",
+                path: ["rentalPrice"],
+            });
+        }
     }
-}, {
-    message: "You must provide a valid price for the selected price type",
-    path: ["purchasePrice", "rentalPrice"]
 });

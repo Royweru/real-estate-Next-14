@@ -35,6 +35,13 @@ export const Sidebar = (
                 iconSrc = '/profileicon.jpeg'
                 href = '/management/profile/edit'
                />
+               {user?.role === "ADMIN" && (
+                 <SidebarItem 
+                  label='Approvals'
+                  iconSrc = '/alerts.png'
+                  href = '/management/approvals'
+                 />
+               )}
            </div>
            <div className=' p-4 w-full'>
                 <UserButton user={user} />
