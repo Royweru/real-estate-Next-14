@@ -21,7 +21,7 @@ locations
     const [searchStatusId,setSearchStatusId] = useState<string>("")
     const [searchLocationId,setSearchLocationId] = useState<string>("")
 
-    const [{statusId},setFilters]= useFiltersPropertiesAdmin()
+    const [, setFilters]= useFiltersPropertiesAdmin()
     
     const onSearch = async()=>{
       setFilters({
@@ -33,108 +33,85 @@ locations
     
     }
   return (
-     <div className='relative max-w-4xl mx-auto py-2 px-2'>
-        <div className=' flex items-center w-full relative gap-2.5 flex-wrap justify'>
-           
-                <select 
-                  value={searchCategoryId}
-                  onChange={(e)=>setSearchCategoryId(e.target.value)}
-                 className=' p-2 rounded-md border border-slate-500/95 bg-neutral-200/95 text-neutral-700 shadow-sm'
-                >
-                       <option value="" defaultChecked>Choose a category</option>
-                    {categories?.map((category)=>(
-                   <option
-                    value={category.id}
-                    key={category.id}
-                    >
-                          {category.name}
-                   </option>
-                    ))}
-                </select>
-                <select 
-                 value={searchTypeId}
-                  onChange={(e)=>setSearchTypeId(e.target.value)}
-                 className=' p-2 rounded-md border border-slate-500/95 bg-neutral-200/95 text-neutral-700 shadow-sm'
-                >
-                    <option value="" defaultChecked>Property types</option>
-                    {propertyTypes?.map((propertyType)=>(
-                   <option
-                    value={propertyType.id}
-                    key={propertyType.id}
-                    >
-                          {propertyType.name}
-                   </option>
-                    ))}
-                </select>
-                <select 
-
-                  value={searchStatusId}
-                  onChange={(e)=>setSearchStatusId(e.target.value)}
-                 className=' p-2 rounded-md border border-slate-500/95 bg-neutral-200/95 text-neutral-700 shadow-sm'
-                >
-                    <option value="" defaultChecked>Status</option>
-                    {status?.map((status)=>(
-                   <option
-                    value={status.id}
-                    key={status.id}
-                    >
-                          {status.name}
-                   </option>
-                    ))}
-                </select>
-                <select 
-
-                  value={searchLocationId}
-                  onChange={(e)=>setSearchLocationId(e.target.value)}
-                 className=' p-2 rounded-md border border-slate-500/95 bg-neutral-200/95 text-neutral-700 shadow-sm'
-                >
-                    <option
-                     value={""} 
-                     defaultChecked>Location of the property</option>
-                    {locations?.map((location)=>(
-                   <option
-                    value={location.id}
-                    key={location.id}
-                    >
-                          {location.county},{location.city}
-                   </option>
-                    ))}
-                   
-                </select>
-              <div className='relative gap-x-2 flex items-center justify-center'>
-                     <button  
-                     className=' bg-sky-100/95 p-2 rounded-lg 
-                     shadow-sm border-b-2 active:border-b-0 flex
-                      items-center gap-x-2 relative  justify-center 
-                      font-semibold text-neutral-800/95'
-                      onClick={onSearch}
-                      >
-                        <p className=' font-semibold text-sm'>
-                            Search
-                        </p>
-                        <SearchIcon className=' size-4 font-bold' />
-                     </button>
-                     <button  
-                     className=' bg-rose-500/95 p-2 rounded-lg 
-                     shadow-sm border-b-2 active:border-b-0 flex
-                      items-center gap-x-2 relative  justify-center 
-                      font-semibold text-neutral-100/95'
-                      onClick={()=>{setFilters({
-                        typeId:"",
-                        locationId:"",
-                        categoryId:"",
-                        statusId:""
-                      })
-                   
-                    }}
-                      >
-                        <p className=' font-semibold text-sm'>
-                            Reset
-                        </p>
-                        
-                     </button>
-              </div>
+    <div className="mx-auto w-full max-w-5xl rounded-2xl border border-stone-200 bg-white/80 p-4 shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="grid w-full gap-3 text-sm text-stone-700 md:grid-cols-4">
+          <select
+            className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-stone-700 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-200"
+            value={searchCategoryId}
+            onChange={(e) => setSearchCategoryId(e.target.value)}
+          >
+            <option value="">Category</option>
+            {categories?.map((category) => (
+              <option value={category.id} key={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+          <select
+            className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-stone-700 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-200"
+            value={searchTypeId}
+            onChange={(e) => setSearchTypeId(e.target.value)}
+          >
+            <option value="">Property type</option>
+            {propertyTypes?.map((propertyType) => (
+              <option value={propertyType.id} key={propertyType.id}>
+                {propertyType.name}
+              </option>
+            ))}
+          </select>
+          <select
+            className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-stone-700 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-200"
+            value={searchStatusId}
+            onChange={(e) => setSearchStatusId(e.target.value)}
+          >
+            <option value="">Status</option>
+            {status?.map((statusOption) => (
+              <option value={statusOption.id} key={statusOption.id}>
+                {statusOption.name}
+              </option>
+            ))}
+          </select>
+          <select
+            className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-stone-700 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-200"
+            value={searchLocationId}
+            onChange={(e) => setSearchLocationId(e.target.value)}
+          >
+            <option value="">Location</option>
+            {locations?.map((location) => (
+              <option value={location.id} key={location.id}>
+                {location.county}, {location.city}
+              </option>
+            ))}
+          </select>
         </div>
-     </div>
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={onSearch}
+            className="flex items-center gap-2 rounded-xl border border-sky-500 bg-sky-500/90 px-4 py-2 font-semibold text-white transition hover:bg-sky-600"
+          >
+            <SearchIcon className="size-4" />
+            <span>Search</span>
+          </button>
+          <button
+            onClick={() => {
+              setFilters({
+                typeId: "",
+                locationId: "",
+                categoryId: "",
+                statusId: "",
+              })
+              setSearchCategoryId("")
+              setSearchTypeId("")
+              setSearchStatusId("")
+              setSearchLocationId("")
+            }}
+            className="flex items-center gap-2 rounded-xl border border-neutral-300 px-4 py-2 font-semibold text-neutral-700 transition hover:border-neutral-400"
+          >
+            Reset filters
+          </button>
+        </div>
+      </div>
+    </div>
   )
 }

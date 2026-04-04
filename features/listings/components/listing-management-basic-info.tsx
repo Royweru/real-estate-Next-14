@@ -1,142 +1,83 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-import React from "react";
 import { ListingType } from "../types";
 import { MediaSection } from "./media-section-admin";
-import { CheckCircleIcon } from "lucide-react";
+
+const metricStyles = "rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center";
 
 export const ListingManagementBasicInfo = ({ data }: { data: ListingType }) => {
-  if (!data) return <div className=" font-bold">No data</div>;
+  if (!data) return <div className="font-bold">No data</div>;
+
   return (
-    <div className=" w-full h-full relative space-y-2">
-      <Card>
-        <CardHeader>
-          <CardTitle className=" text-lg font-semibold">
-            Basic infomation
-          </CardTitle>
+    <div className="w-full space-y-5">
+      <Card className="rounded-2xl border border-slate-200 bg-white/90 shadow-sm">
+        <CardHeader className="pb-0">
+          <CardTitle className="text-xl font-bold">Property overview</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className=" grid sm:grid-cols-2 gap-3 relative w-full">
-            <div className=" bg-neutral-100/75 shadow-sm col-span-1 rounded-md p-4">
-              <div className=" flex flex-col items-center justify-center gap-2 ">
-                <p className=" text-base font-normal text-black">
-                  Current status
-                </p>
-                <div className=" flex justify-center items-center gap-x-2">
-                  <div
-                    className={` p-1.5 rounded-full ${
-                      data.status.name === "Active"
-                        ? "bg-emerald-400"
-                        : data.status.name === "Pending"
-                        ? "bg-sky-400"
-                        : "bg-rose-500"
-                    }`}
-                  />
-
-                  <h4
-                    className={` font-semibold text-lg ${
-                      data.status.name === "Active"
-                        ? "text-emerald-400"
-                        : data.status.name === "Pending"
-                        ? "text-sky-400"
-                        : "text-rose-500"
-                    }`}
-                  >
-                    {data.status.name}
-                  </h4>
-                </div>
-              </div>
+        <CardContent className="space-y-5">
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="flex flex-col gap-1 rounded-2xl border border-emerald-100 bg-emerald-50/70 px-4 py-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-600">Status</p>
+              <p className="text-lg font-semibold text-emerald-700">{data.status.name}</p>
             </div>
-            <div className=" bg-neutral-100/75 shadow-sm col-span-1 rounded-md p-4">
-              <div className=" flex flex-col items-center justify-center gap-2 ">
-                <p className=" text-base font-normal text-black">
-                  Property Type
-                </p>
-                <div>
-                  <h4 className={` font-semibold text-lg text-neutral-800/95`}>
-                    {data.type.name}
-                  </h4>
-                </div>
-              </div>
+            <div className="flex flex-col gap-1 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Type</p>
+              <p className="text-lg font-semibold text-stone-900">{data.type.name}</p>
             </div>
-            <div className=" bg-neutral-100/75 shadow-sm col-span-1 rounded-md p-4">
-              <div className=" flex flex-col items-center justify-center gap-2 ">
-                <p className=" text-base font-normal text-black">Category</p>
-                <div>
-                  <h4 className={` font-semibold text-lg text-neutral-800/95`}>
-                    {data.category.name}
-                  </h4>
-                </div>
-              </div>
+            <div className="flex flex-col gap-1 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Category</p>
+              <p className="text-lg font-semibold text-stone-900">{data.category.name}</p>
             </div>
           </div>
 
-          <div className=" mt-4 relative w-full">
-            <div className=" grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3 w-full lg:px-3.5 px-2">
-              <div className=" flex flex-col items-center gap-y-0.5 shadow-sm rounded-md bg-slate-50">
-                <h5 className=" text-base text-neutral-800/95 font-normal italic font-mono">
-                  Bedrooms
-                </h5>
-                <p className=" text-xl font-semibold text-zinc-950">
-                  {data.bedrooms}
-                </p>
-              </div>
-              <div className=" flex flex-col items-center gap-y-0.5 shadow-sm rounded-md bg-slate-50">
-                <h5 className=" text-base text-neutral-800/95 font-normal italic font-mono">
-                  Bathrooms
-                </h5>
-                <p className=" text-xl font-semibold text-zinc-950">
-                  {data.bathrooms}
-                </p>
-              </div>
-              <div className=" flex flex-col items-center gap-y-0.5 shadow-sm rounded-md bg-slate-50">
-                <h5 className=" text-base text-neutral-800/95 font-normal italic font-mono">
-                  Area (square metre)
-                </h5>
-                <p className=" text-xl font-semibold text-zinc-950">
-                  {data.area}
-                </p>
-              </div>
-              <div className=" flex flex-col items-center gap-y-0.5 shadow-sm rounded-md bg-slate-50">
-                <h5 className=" text-base text-neutral-800/95 font-normal italic font-mono">
-                  Current price
-                </h5>
-                <p className=" text-xl font-semibold text-zinc-950">
-                  {data.priceType === "purchase"
-                    ? data.purchasePrice?.toLocaleString("en") ?? "N/A"
-                    : data.rentalPrice?.toLocaleString("en") ?? "N/A"}
-                </p>
-              </div>
+          <div className="grid gap-4 md:grid-cols-4">
+            <div className={metricStyles}>
+              <p className="text-xs uppercase tracking-[0.3em] text-neutral-500">Bedrooms</p>
+              <p className="text-2xl font-bold text-stone-900">{data.bedrooms}</p>
+            </div>
+            <div className={metricStyles}>
+              <p className="text-xs uppercase tracking-[0.3em] text-neutral-500">Bathrooms</p>
+              <p className="text-2xl font-bold text-stone-900">{data.bathrooms}</p>
+            </div>
+            <div className={metricStyles}>
+              <p className="text-xs uppercase tracking-[0.3em] text-neutral-500">Area (m²)</p>
+              <p className="text-2xl font-bold text-stone-900">{data.area}</p>
+            </div>
+            <div className={metricStyles}>
+              <p className="text-xs uppercase tracking-[0.3em] text-neutral-500">Price</p>
+              <p className="text-2xl font-bold text-stone-900">
+                {data.priceType === "purchase"
+                  ? `Kes ${data.purchasePrice?.toLocaleString("en") ?? "-"}`
+                  : `Kes ${data.rentalPrice?.toLocaleString("en") ?? "-"}`}
+              </p>
             </div>
           </div>
 
-          <div className=" mt-4 w-full relative">
-            <h3 className=" text-xl font-semibold text-stone-800/85 my-2">
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-neutral-500">
               Amenities
             </h3>
-            <div className=" w-full grid md:grid-cols-3 grid-cols-2 gap-4">
+            <div className="mt-3 flex flex-wrap gap-2">
               {data.amenities?.map((amenity) => (
-                <div
+                <span
                   key={amenity.id}
-                  className=" col-span-1 relative flex items-center justify-center gap-x-1.5"
+                  className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-neutral-600"
                 >
-                  <CheckCircleIcon className=" size-3.5 font-bold text-neutral-900/85" />
-                  <span className=" italic">{amenity.name}</span>
-                </div>
+                  {amenity.name}
+                </span>
               ))}
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card className=" h-full w-full">
-        <CardHeader>
-          <CardTitle className=" text-lg font-semibold">Media</CardTitle>
+      <Card className="rounded-2xl border border-slate-200 bg-white/90 shadow-sm">
+        <CardHeader className="pb-0">
+          <CardTitle className="text-xl font-bold">Media & assets</CardTitle>
         </CardHeader>
         <CardContent>
           <MediaSection data={data} />
         </CardContent>
       </Card>
     </div>
-  );
-};
+  )
+}

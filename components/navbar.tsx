@@ -165,10 +165,10 @@ export const Navbar = ({
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <div className=" relative w-full flex pl-1">
-                    <Avatar className=" size-12">
+                    <Avatar className="h-9 w-9">
                       <AvatarImage src={user?.image || ""} />
                       <AvatarFallback className=" bg-gradient-to-br from-sky-100 via-sky-400 to-sky-500  ">
-                        <p className=" font-bold text-2xl text-neutral-50">
+                        <p className=" font-bold text-xl text-neutral-50">
                           {user?.name?.charAt(0).toUpperCase()}
                           {user?.name?.charAt(1).toUpperCase()}
                         </p>
@@ -177,17 +177,15 @@ export const Navbar = ({
                   </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className=" p-2 " side="bottom">
-                {user.listings.length>0 &&(
-                    <DropdownMenuItem className="cursor-pointer">
+                  <DropdownMenuItem className="cursor-pointer">
                     <a href="/management/properties">
                       <div className=" w-full relative font-semibold flex items-center  gap-x-2">
                         <p>
-                          Dashboard
+                          My Properties
                         </p>
                       </div>
                     </a>
                   </DropdownMenuItem>
-                   )}
                   <DropdownMenuItem className="cursor-pointer">
                     <a href="/listing/new">
                       <div className=" w-full relative font-semibold flex items-center  gap-x-2">
@@ -351,11 +349,11 @@ export const Navbar = ({
               <li>
                 <DropdownMenu>
                   <DropdownMenuTrigger>
-                    <div className=" relative w-full flex pl-1">
-                      <Avatar className=" size-12">
+                     <div className=" relative w-full flex pl-1">
+                       <Avatar className="h-9 w-9">
                         <AvatarImage src={user?.image || ""} />
                         <AvatarFallback className=" bg-gradient-to-br from-sky-100 via-sky-400 to-sky-500  ">
-                          <p className=" font-bold text-2xl text-neutral-50">
+                          <p className=" font-bold text-xl text-neutral-50">
                             {user?.name?.charAt(0).toUpperCase()}
                             {user?.name?.charAt(1).toUpperCase()}
                           </p>
@@ -364,17 +362,15 @@ export const Navbar = ({
                     </div>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className=" p-2" side="right">
-                   {user.listings.length>0 &&(
-                    <DropdownMenuItem className="cursor-pointer">
+                  <DropdownMenuItem className="cursor-pointer">
                     <a href="/management/properties">
                       <div className=" w-full relative font-semibold flex items-center  gap-x-2">
                         <p>
-                          Dashboard
+                          My Properties
                         </p>
                       </div>
                     </a>
                   </DropdownMenuItem>
-                   )}
                  
                   <DropdownMenuItem className="cursor-pointer">
                     <a href="/listing/new">

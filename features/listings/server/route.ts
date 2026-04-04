@@ -101,14 +101,24 @@ const app = new Hono()
       return c.json({ error: "Listing id is required !" }, 400);
     }
     
-    const body = await c.req.json()
-    console.log(body)
-    try {
-      const res = await db.listing.update({
-        where: {
-          id: listingId,
-        },
-        data: {
+  const body = await c.req.json()
+  console.log(body)
+  try {
+    const existingListing = await db.listing.findUnique({
+      where: { id: listingId },
+      select: { userId: true },
+    });
+    if (!existingListing) {
+      return c.json({ error: "Listing not found" }, 404);
+    }
+    if (existingListing.userId !== user.id) {
+      return c.json({ error: "Forbidden" }, 403);
+    }
+    const res = await db.listing.update({
+      where: {
+        id: listingId,
+      },
+      data: {
           ...body,
         },
       });
@@ -128,6 +138,16 @@ const app = new Hono()
     const listingId = c.req.param("listingId")
     if(!listingId) return new NextResponse("Listing Id is required!")
     try {
+      const existingListing = await db.listing.findUnique({
+        where: { id: listingId },
+        select: { userId: true },
+      });
+      if (!existingListing) {
+        return new NextResponse("Listing not found", { status: 404 });
+      }
+      if (existingListing.userId !== user.id) {
+        return new NextResponse("Forbidden", { status: 403 });
+      }
        const res = await db.listing.delete({
         where:{
           id:listingId

@@ -1,5 +1,7 @@
 import { fetchListing } from "@/actions/fetchProperty";
 import { PropertyManagementHeader } from "@/features/listings/components/property-management-header";
+import { serverUser } from "@/lib/serverUser";
+import { redirect } from "next/navigation";
 
 const PropertyManagementDashboard = async ({
   children,
@@ -8,7 +10,10 @@ const PropertyManagementDashboard = async ({
   children: React.ReactNode;
   params: { propertyId: string };
 }) => {
-  const listing = await fetchListing(params.propertyId);
+  const user = await serverUser();
+  if (!user) redirect("/auth/sign-in");
+  const listing = await fetchListing(params.propertyId, user.id);
+  if (!listing) redirect("/management/properties");
   return (
     <div className=" relative w-full min-h-screen p-0">
       <PropertyManagementHeader listing={listing} />

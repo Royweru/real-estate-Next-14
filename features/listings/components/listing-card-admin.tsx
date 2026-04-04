@@ -1,5 +1,4 @@
 "use client";
-import { Badge } from "@/components/ui/badge";
 import {
   Amenity,
   Category,
@@ -10,7 +9,11 @@ import {
 } from "@prisma/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
+const statusTone = {
+  Active: "bg-emerald-100 text-emerald-600",
+  Pending: "bg-amber-100 text-amber-600",
+  Closed: "bg-rose-100 text-rose-600",
+};
 
 export const ListingCardAdmin = ({
   data,
@@ -24,52 +27,60 @@ export const ListingCardAdmin = ({
   };
 }) => {
   const router = useRouter();
+  const statusStyles = statusTone[data.status.name as keyof typeof statusTone] ??
+    "bg-slate-100 text-slate-700";
+  const price = data.purchasePrice
+    ? data.purchasePrice.toLocaleString("en")
+    : data.rentalPrice
+    ? data.rentalPrice.toLocaleString("en")
+    : "N/A";
+  const priceLabel = data.priceType === "purchase" ? "Sale" : "Rent";
+
   return (
     <div
-      className="bg-white hover:cursor-pointer hover:opacity-85
-     shadow-md rounded-lg p-0 col-span-1"
+      className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white text-stone-900 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg focus-within:-translate-y-0.5 focus-within:shadow-lg"
+      tabIndex={0}
+      role="button"
       onClick={() =>
         router.push(`/management/properties/${data.id}/dashboard/listing`)
       }
     >
-      <div className=" relative w-full h-60  ">
-        <Image
-          src={data.images[0].url}
-          alt="Placeholder image"
-          fill
-          className=" bg-cover bg-center rounded-t-lg"
-        />
-
-        {data.category.name === "Rent" && (
-          <Badge
-            variant={
-              data?.status.name === "Active"
-                ? "destructive"
-                : data?.status.name === "Pending"
-                ? "default"
-                : "secondary"
-            }
-            className="top-1 right-1 absolute"
-          >
-            {data?.status.name === "Active"
-              ? "Available"
-              : data?.status.name === "Closed"
-              ? "Not available"
-              : "Booked"}
-          </Badge>
+      <div className="relative h-52 w-full">
+        {data.images[0]?.url ? (
+          <Image
+            src={data.images[0].url}
+            alt={data.title}
+            fill
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="h-full w-full rounded-2xl bg-gradient-to-br from-slate-200 to-slate-100" />
         )}
-      </div>
-      <div className=" p-4 flex flex-col gap-y-2 relative">
-        <h2 className="text-xl font-bold text-gray-800">{data.title}</h2>
-        <p className="text-gray-600 text-sm">
-          {data.description?.slice(0, 50)} ......
-        </p>
-        <span className="text-sm font-mono font-semibold text-green-600">
-          Kes{" "}
-          {data.rentalPrice
-            ? data.rentalPrice.toLocaleString("en")
-            : data.purchasePrice?.toLocaleString("en")}
+        <span
+          className={`absolute left-4 top-4 rounded-full px-3 py-1 text-xs font-semibold ${statusStyles}`}
+        >
+          {data.status.name}
         </span>
+        <span className="absolute right-4 bottom-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-stone-900">
+          {priceLabel}
+        </span>
+      </div>
+      <div className="flex flex-1 flex-col gap-2 p-4">
+        <div>
+          <p className="text-lg font-semibold leading-tight">{data.title}</p>
+          <p className="text-sm text-neutral-500">
+            {data.location.county}, {data.location.city}
+          </p>
+        </div>
+        <div className="flex items-center justify-between">
+          <p className="text-xl font-bold text-stone-900">Kes {price}</p>
+          <div className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
+            {data.bedrooms} bd · {data.bathrooms} ba · {data.area} m²
+          </div>
+        </div>
+        <p className="line-clamp-2 text-sm text-neutral-600">
+          {data.description ?? "No description available."}
+        </p>
       </div>
     </div>
   );

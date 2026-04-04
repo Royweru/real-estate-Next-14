@@ -3,7 +3,14 @@ import { SearchBox } from './search-box'
 import { Category, Listing, Location, Type, User } from '@prisma/client'
 import { HeroNav } from './hero-nav'
 
-export const Hero = ({propertyTypes,categories,locations,user}:{propertyTypes:Type[],categories:Category[],locations:Location[],user:User &{
+export const Hero = ({
+  propertyTypes,
+  categories,
+  locations,
+  user
+}:{
+  propertyTypes:Type[],
+  categories:Category[],locations:Location[],user:User &{
   listings:Listing[]
 }| null}) => {
   return (

@@ -7,6 +7,8 @@ import { PropertiesManagementFilter } from "@/features/listings/components/prope
 import { ListingsDisplay } from "@/features/listings/components/listings-display";
 import { fetchLocations } from "@/actions/fetchLocations";
 import { fetchPropertiesManagement } from "@/actions/fetchProperties";
+import { serverUser } from "@/lib/serverUser";
+import { redirect } from "next/navigation";
 
 export const revalidate = 0
 
@@ -21,7 +23,8 @@ const PropertiesPage = async ({
   };
 }) => {
   const { statusId, locationId, categoryId, typeId } = searchParams;
-  console.log("Fetching properties with searchParams:", searchParams);
+  const user = await serverUser();
+  if (!user) redirect("/auth/sign-in");
   const [categories, types, status, locations, properties] = await Promise.all([
     fetchCategories(),
     FetchTypes(),
@@ -32,12 +35,13 @@ const PropertiesPage = async ({
       locationId,
       categoryId,
       typeId,
+      userId: user.id,
     }),
   ]);
 
   return (
     <div className="w-full h-full flex flex-col gap-y-4">
-      <PropertiesHeader />
+      <PropertiesHeader count={properties.length} />
       <PropertiesManagementFilter
         categories={categories}
         propertyTypes={types}

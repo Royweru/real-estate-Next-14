@@ -16,8 +16,9 @@ const app = new Hono()
     })),
     async(c)=>{
     const {email,password,name} = c.req.valid('json')
-     const exisistingUser = await getUserByEmail(email)
-     if(exisistingUser) return c.json({message:'User already exists'},400)
+    console.log("User registering email", email)
+     const existingUser = await getUserByEmail(email)
+     if(existingUser) return c.json({message:'User already exists'},400)
     const hashedPassword = await bcrypt.hash(password,10)
     const newUser = await db.user.create({
         data:{

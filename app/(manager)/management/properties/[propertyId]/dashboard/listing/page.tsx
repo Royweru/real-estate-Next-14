@@ -4,6 +4,7 @@ import { ListingManagementAnalytics } from '@/features/listings/components/listi
 import { ListingManagementBasicInfo } from '@/features/listings/components/listing-management-basic-info'
 import { redirect } from 'next/navigation'
 import React from 'react'
+import { serverUser } from '@/lib/serverUser'
 
 const PropertyManagementListing = async ({
     params
@@ -11,7 +12,9 @@ const PropertyManagementListing = async ({
     :{
     params:{propertyId:string}
 }) => {
-  const listing = await fetchListing(params.propertyId)
+  const user = await serverUser()
+  if(!user) redirect('/auth/sign-in')
+  const listing = await fetchListing(params.propertyId, user.id)
   if(!listing) return redirect('/management/properties')
   return (
     <div className=' w-full h-full'>
