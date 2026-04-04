@@ -12,7 +12,8 @@ export async function fetchPropertiesManagement({
   minBedrooms,
   maxBedrooms,
   minPrice,
-  maxPrice
+  maxPrice,
+  userId
 }: {
   title?: string;
   categoryId?: string;
@@ -25,6 +26,7 @@ export async function fetchPropertiesManagement({
   maxBedrooms?: string;
   minBathrooms?: string;
   maxBathrooms?: string;
+  userId?: string;
 }) {
  const where: any = {};
 
@@ -83,7 +85,10 @@ export async function fetchPropertiesManagement({
   try {
     // Fetch listings from the DB including related data
     const listings = await db.listing.findMany({
-      where,
+      where: {
+        ...where,
+        ...(userId ? { userId } : {}),
+      },
       include: {
         images: true,
         amenities: true,

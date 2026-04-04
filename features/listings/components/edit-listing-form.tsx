@@ -91,7 +91,7 @@ export const EditListingForm = ({
           },
         });
         form.reset();
-        router.push(`/properties/management/${data?.id}/dashboard/listing`);
+        router.push(`/management/properties/${data?.id}/dashboard/listing`);
       }
     } catch (error) {
       console.error(error);

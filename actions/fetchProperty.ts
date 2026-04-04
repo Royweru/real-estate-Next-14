@@ -1,14 +1,17 @@
 import { prisma } from "@/lib/prisma"
 
 
-export async function fetchListing(propertyId: string){
+export async function fetchListing(propertyId: string, ownerId?: string){
     try {
         if (!propertyId) return null;
 
-        const listing = await prisma.listing.findUnique({
-            where: {
-                id: propertyId
-            },
+        const where: { id: string; userId?: string } = { id: propertyId };
+        if (ownerId) {
+            where.userId = ownerId;
+        }
+
+        const listing = await prisma.listing.findFirst({
+            where,
             include: {
                 images: true,
                 amenities: true,
