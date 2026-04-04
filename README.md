@@ -1,38 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Apartimenti - Real Estate Management Platform
 
-## Getting Started
+## Architecture Overview
+Apartimenti is a monolithic full-stack application built on Next.js 14 utilizing the App Router. It serves as a dual-purpose platform handling public-facing property browsing and authenticated administrative/agent dashboards for inventory and lead management.
 
-First, run the development server:
+### Tech Stack
+* **Framework:** Next.js 14.2.23 (React 18)
+* **Database ORM:** Prisma 6.3.1
+* **Authentication:** NextAuth.js v5 (Beta) utilizing JWT strategy and Credentials/OAuth providers.
+* **Styling & UI:** Tailwind CSS, Radix UI primitives, Relume UI components.
+* **File Storage:** Cloudinary (via `next-cloudinary`) and AWS S3 infrastructure.
+* **Email:** Resend.
+* **Validation:** Zod schemas.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Directory Structure
+* `/app/(authentication)`: Authentication flows (Sign-in, Sign-up, Verification).
+* `/app/(manager)`: Protected dashboard routes for Agents and Admins.
+* `/app/(publicroutes)`: Unauthenticated client-facing pages (Home, Browse, View Listing).
+* `/features/*`: Domain-driven modular components (auth, inquiries, listings).
+* `/actions`: Server actions for data mutation and fetching.
+* `/lib`: Core utilities (Prisma client singleton, mailer, token generation).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# apartamenti-next14
-# real-estate-Next-14
+### Local Environment Setup
+1.  **Install Dependencies:**
+    ```bash
+    npm install
+    ```
+2.  **Environment Variables (`.env`):**
+    ```env
+    DATABASE_URL="postgresql://user:password@localhost:5432/apartimenti"
+    DATABASE_URL_UNPOOLED="postgresql://user:password@localhost:5432/apartimenti"
+    AUTH_SECRET="generate-via-openssl"
+    RESEND_API_KEY="your-resend-key"
+    NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="your-cloud-name"
+    ```
+3.  **Database Initialization:**
+    ```bash
+    npx prisma db push
+    npm run seed
+    ```
+4.  **Run Development Server:**
+    ```bash
+    npm run dev
+    ```
