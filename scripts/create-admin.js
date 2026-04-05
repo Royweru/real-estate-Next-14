@@ -22,7 +22,14 @@ async function main() {
     data: { role: 'ADMIN' },
   });
 
-  console.log(`Successfully updated ${email} to ADMIN role.`);
+  // Also ensure they are in the SuperAdmin table for approval permissions
+  await prisma.superAdmin.upsert({
+    where: { userId: user.id },
+    update: {},
+    create: { userId: user.id },
+  });
+
+  console.log(`Successfully updated ${email} to ADMIN and populated SuperAdmin.`);
 }
 
 main()

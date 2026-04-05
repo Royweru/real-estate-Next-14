@@ -1,34 +1,18 @@
 "use client";
 
-import {
-  Amenity,
-  Category,
-  Image as ImageType,
-  Listing,
-  Location,
-  Status,
-} from "@prisma/client";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import axios from "axios";
+import { ListingType } from "../types";
 
 export const ApprovalListingCard = ({
   data,
   onActionComplete
 }: {
-  data: Listing & {
-    images: ImageType[];
-    amenities: Amenity[];
-    status: Status;
-    location: Location;
-    category: Category;
-  };
+  data: ListingType;
   onActionComplete: () => void;
 }) => {
-  const router = useRouter();
-
   const price = data.purchasePrice
     ? data.purchasePrice.toLocaleString("en")
     : data.rentalPrice

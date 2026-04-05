@@ -21,13 +21,14 @@ export const ListingCardAdmin = ({
   data: Listing & {
     images: ImageType[];
     amenities: Amenity[];
-    status: Status;
+    status: Status | null;
     location: Location;
     category: Category;
   };
 }) => {
   const router = useRouter();
-  const statusStyles = statusTone[data.status.name as keyof typeof statusTone] ??
+  const statusName = data.status?.name ?? "Pending";
+  const statusStyles = statusTone[statusName as keyof typeof statusTone] ??
     "bg-slate-100 text-slate-700";
   const price = data.purchasePrice
     ? data.purchasePrice.toLocaleString("en")
@@ -59,7 +60,7 @@ export const ListingCardAdmin = ({
         <span
           className={`absolute left-4 top-4 rounded-full px-3 py-1 text-xs font-semibold ${statusStyles}`}
         >
-          {data.status.name}
+          {statusName}
         </span>
         <span className="absolute right-4 bottom-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-stone-900">
           {priceLabel}

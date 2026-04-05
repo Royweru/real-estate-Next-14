@@ -40,7 +40,7 @@ interface EditListingFormProps {
   types: Type[];
   categories: Category[];
   amenities: Amenity[];
-  data: ListingType;
+  data: ListingType | null;
 }
 export const EditListingForm = ({
   locations,
@@ -66,7 +66,7 @@ export const EditListingForm = ({
       purchasePrice: data?.purchasePrice,
       rentalPrice: data?.rentalPrice,
       locationId: data?.locationId,
-      statusId: data?.statusId,
+      statusId: data?.statusId || undefined,
       typeId: data?.typeId,
       categoryId: data?.categoryId,
       images: data?.images,

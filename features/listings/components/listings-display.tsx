@@ -8,7 +8,7 @@ export const ListingsDisplay = ({
   properties: (Listing & {
     images: Image[]
     amenities: Amenity[]
-    status: Status
+    status: Status | null
     location: Location
     category: Category
   })[]

@@ -6,7 +6,7 @@ export type ListingType = {
     locationId: string;
     typeId: string;
     categoryId: string;
-    statusId: string;
+    statusId: string | null;
     title: string;
     description: string | null;
     videoUrl: string | null;
@@ -18,11 +18,11 @@ export type ListingType = {
     area: number;
     images: ImageType[];
     amenities: Amenity[];
-    status: Status;
+    status: Status | null;
     type:Type
     category: Category;
     location: Location;
-} | null
+}
 
 
 export interface LocationWithListingsProps {
@@ -37,7 +37,7 @@ export interface LocationWithListingsProps {
     locationId: string;
     typeId: string;
     categoryId: string;
-    statusId: string;
+    statusId: string | null;
     title: string;
     description: string | null;
     videoUrl: string | null;

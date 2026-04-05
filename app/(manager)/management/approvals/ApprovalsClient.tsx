@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ApprovalListingCard } from "@/features/listings/components/approval-listing-card";
 import { Loader2 } from "lucide-react";
+import { ListingType } from "@/features/listings/types";
 
 export const ApprovalsClient = () => {
   const [listings, setListings] = useState([]);
@@ -44,7 +45,7 @@ export const ApprovalsClient = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      {listings.map((listing: any) => (
+      {listings.map((listing: ListingType) => (
         <ApprovalListingCard
           key={listing.id}
           data={listing}

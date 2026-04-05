@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,157 +9,140 @@ datasource db {
   // uncomment next line if you use Prisma <5.10
   directUrl = env("DATABASE_URL_UNPOOLED")
 }
-enum UserRole {
-  ADMIN
-  USER
-  AGENT
-}
 
- 
 model User {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
+  email         String?     @unique
+  emailVerified DateTime?   @map("email_verified")
   image         String?
-  role UserRole @default(USER)
-  hashedPwd String
+  role          UserRole    @default(USER)
+  hashedPwd     String
+  listings      Listing[]
+  superAdmin    SuperAdmin?
   accounts      Account[]
-  listings Listing[]
-  superAdmin SuperAdmin?
 
   @@map("users")
 }
- 
+
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String  @map("user_id")
-  type               String
-  provider           String
-  providerAccountId  String  @map("provider_account_id")
-  refresh_token      String? @db.Text
-  access_token       String? @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? @db.Text
-  session_state      String?
- 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@unique([provider, providerAccountId])
   @@map("accounts")
 }
- 
 
 model VerificationToken {
-  id String @id @default(cuid())
-  email      String
-  token      String @unique
-  expires    DateTime
- 
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
   @@unique([email, token])
   @@map("verification_tokens")
 }
 
-model Location{
-  id String @id @default(cuid())
-
-  county String
-  city String
-
- properties Listing []
+model Location {
+  id         String    @id @default(cuid())
+  county     String
+  city       String
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
-}
-
-model Status{
-  id String @id @default(cuid())
-  name String
-
   properties Listing[]
 }
-model Category{
-  id String @id @default(cuid())
-  name String
 
-  properties Listing[] 
-}
-
-model Type{
-  id String @id @default(cuid())
-  name String
-  
+model Status {
+  id         String    @id @default(cuid())
+  name       String
   properties Listing[]
 }
+
+model Category {
+  id         String    @id @default(cuid())
+  name       String
+  properties Listing[]
+}
+
+model Type {
+  id         String    @id @default(cuid())
+  name       String
+  properties Listing[]
+}
+
 model Amenity {
-  id          String     @id @default(cuid())
-  name        String     @unique
-  listings    Listing[]  @relation("ListingToAmenity")
+  id       String    @id @default(cuid())
+  name     String    @unique
+  listings Listing[] @relation("ListingToAmenity")
 }
 
-model Listing{
-  id String @id @default(cuid())
-
-  userId String
-  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
-
-  locationId String
-  location Location @relation(fields: [locationId],references: [id],onDelete: SetNull)
-  
-  typeId String
-  type Type @relation(fields: [typeId],references: [id],onDelete:Cascade)
-
-  categoryId String
-  category Category @relation(fields: [categoryId],references: [id],onDelete:Cascade)
-
-  statusId String?
-  status Status? @relation(fields: [statusId],references: [id],onDelete: SetNull)
-  
-  title String
-  description String?
-  images Image[]
-  videoUrl String?
-  bedrooms Int
-  amenities   Amenity[]  @relation("ListingToAmenity")
-  priceType    String    @default("rental") // "purchase" or "rental"
-  purchasePrice Float?   // Optional purchase price
-  rentalPrice   Float?   // Optional rental price
-  bathrooms Int
-  isFeatured Boolean @default(false)
-
-  area Int
-  inquiries Inquiry[]
+model Listing {
+  id            String    @id @default(cuid())
+  userId        String
+  locationId    String
+  typeId        String
+  categoryId    String
+  statusId      String?
+  title         String
+  description   String?
+  videoUrl      String?
+  bedrooms      Int
+  priceType     String    @default("rental")
+  purchasePrice Float?
+  rentalPrice   Float?
+  bathrooms     Int
+  isFeatured    Boolean   @default(false)
+  area          Int
+  images        Image[]
+  inquiries     Inquiry[]
+  category      Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  location      Location  @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  status        Status?   @relation(fields: [statusId], references: [id])
+  type          Type      @relation(fields: [typeId], references: [id], onDelete: Cascade)
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amenities     Amenity[] @relation("ListingToAmenity")
 }
 
-model Image{
-  id String @id @default(cuid())
-  url String 
+model Image {
+  id        String   @id @default(cuid())
+  url       String
   listingId String
-  listing Listing @relation(fields:[listingId],references:[id],onDelete:Cascade)
-
   createdAt DateTime @default(now())
-} 
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
 
-
-model Inquiry{
-  id String @id @default(uuid())
-
+model Inquiry {
+  id        String   @id @default(uuid())
   listingId String
-  listing Listing @relation(fields: [listingId],references: [id],onDelete: Cascade)
-
-  name String
-  email String @unique
-  phone String?
-  message String?
-
+  name      String
+  email     String   @unique
+  phone     String?
+  message   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
 }
 
 model SuperAdmin {
   id        String   @id @default(cuid())
   userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  AGENT
 }

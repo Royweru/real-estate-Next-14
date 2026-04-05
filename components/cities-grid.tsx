@@ -10,7 +10,7 @@ export const CitiesGrid = ({
   data:LocationWithListingsProps[] |null
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
-  const isMobile = useMedia("(max-width: 540px)");
+  const isMobile = useMedia("(max-width: 540px)", false);
   if(!data){
     return
   }

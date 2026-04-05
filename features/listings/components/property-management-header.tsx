@@ -78,7 +78,7 @@ export const PropertyManagementHeader =({
                           {listing.location.county}, {listing.location.city}
                         </p>
                         <p className=' text-xs font-semibold uppercase tracking-[0.3em] text-neutral-400'>
-                          {listing.priceType === 'purchase' ? 'For sale' : 'For rent'} • {listing.status.name}
+                          {listing.priceType === 'purchase' ? 'For sale' : 'For rent'} • {listing.status?.name ?? "Pending"}
                         </p>
                      </div>
                   </div>

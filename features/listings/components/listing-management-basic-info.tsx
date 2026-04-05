@@ -24,7 +24,7 @@ export const ListingManagementBasicInfo = ({ data }: { data: ListingType }) => {
           <div className="grid gap-4 md:grid-cols-3">
             <div className="flex flex-col gap-1 rounded-2xl border border-emerald-100 bg-emerald-50/70 px-4 py-3">
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-600">Status</p>
-              <p className="text-lg font-semibold text-emerald-700">{data.status.name}</p>
+              <p className="text-lg font-semibold text-emerald-700">{data.status?.name ?? "Pending"}</p>
             </div>
             <div className="flex flex-col gap-1 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Type</p>

@@ -8,6 +8,7 @@ import { fetchAmenities } from "@/actions/fetchAmenities"
 import { serverUser } from "@/lib/serverUser"
 import { redirect } from "next/navigation"
 import { fetchListing } from "@/actions/fetchProperty"
+import { ListingType } from "@/features/listings/types"
 
 const CreateListingAgent = async ({ params }: { params: { listingId: string } }) => {
   const activeUser = await serverUser()
@@ -21,7 +22,7 @@ const CreateListingAgent = async ({ params }: { params: { listingId: string } })
     fetchAmenities(),
   ])
 
-  let listing = null
+  let listing: ListingType | null = null
   if (params.listingId !== 'new') {
     listing = await fetchListing(params.listingId, activeUser.id)
     if (!listing) return redirect('/management/properties')
