@@ -6,7 +6,9 @@ export const useFiltersPropertiesAdmin = ()=>{
             typeId:parseAsString,
             statusId:parseAsString,
             locationId:parseAsString,
-            categoryId:parseAsString
+            categoryId:parseAsString,
+            title:parseAsString,
+            sort:parseAsString,
         },
     )
     )

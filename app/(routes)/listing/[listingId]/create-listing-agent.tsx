@@ -1,5 +1,4 @@
-import { CreateListingForm } from "@/features/listings/components/create-listing-form"
-import { EditListingForm } from "../../../../features/listings/components/edit-listing-form"
+import { ListingForm } from "@/features/listings/components/listing-form"
 import { fetchLocations } from "@/actions/fetchLocations"
 import { fetchStatus } from "@/actions/fetchStatus"
 import { FetchTypes } from "@/actions/fetchTypes"
@@ -28,28 +27,16 @@ const CreateListingAgent = async ({ params }: { params: { listingId: string } })
     if (!listing) return redirect('/management/properties')
   }
 
-  // if(!activeUser.emailVerified)return redirect('/management/profile/edit')
-
   return (
-    <>
-      {params.listingId === 'new' ? (
-        <CreateListingForm
-          locations={locations}
-          types={listingTypes}
-          categories={categories}
-          amenities={amenities}
-        />
-      ) : (
-        <EditListingForm
-          data={listing}
-          amenities={amenities}
-          locations={locations}
-          status={listingStatus}
-          types={listingTypes}
-          categories={categories}
-        />
-      )}
-    </>
+    <ListingForm
+      mode={params.listingId === 'new' ? 'create' : 'edit'}
+      locations={locations}
+      types={listingTypes}
+      categories={categories}
+      amenities={amenities}
+      status={listingStatus}
+      initialData={listing}
+    />
   )
 }
 export default CreateListingAgent

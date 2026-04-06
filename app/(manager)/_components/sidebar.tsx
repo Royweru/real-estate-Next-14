@@ -3,6 +3,7 @@ import React from 'react'
 import { SidebarItem } from './sidebar-item'
 import { UserButton } from './user-button'
 import { User } from '@prisma/client'
+import { Building2, Mail, UserCircle, ShieldCheck } from 'lucide-react'
 
 export const Sidebar = (
 {user}:{
@@ -19,27 +20,27 @@ export const Sidebar = (
                 </span>
               </div>
            </Link>
-           <div className = 'flex flex-col  w-full gap-y-4 flex-1 px-4 '>
+           <div className = 'flex flex-col  w-full gap-y-2 flex-1 px-3 '>
                <SidebarItem 
                 label='Properties'
-                iconSrc = '/propertyicon.png'
-                href = '/management/properties'
+                icon={Building2}
+                href='/management/properties'
                />
                <SidebarItem 
                 label='Inquiries'
-                iconSrc = '/alerts.png'
-                href = '/management/inquiries'
+                icon={Mail}
+                href='/management/inquiries'
                />
                <SidebarItem 
                 label='Profile'
-                iconSrc = '/profileicon.jpeg'
-                href = '/management/profile/edit'
+                icon={UserCircle}
+                href='/management/profile/edit'
                />
                {user?.role === "ADMIN" && (
                  <SidebarItem 
                   label='Approvals'
-                  iconSrc = '/alerts.png'
-                  href = '/management/approvals'
+                  icon={ShieldCheck}
+                  href='/management/approvals'
                  />
                )}
            </div>

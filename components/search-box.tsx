@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import qs from "query-string";
-import { Category, Location, Type } from "@prisma/client";
+import { Category, Type } from "@prisma/client";
 import { SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -13,7 +13,7 @@ export const SearchBox = ({
 }: {
   propertyTypes: Type[];
   categories: Category[];
-  locations: Location[];
+  locations: { id: string; county: string; city: string }[];
 }) => {
   const router = useRouter();
   const [categoryId, setCategoryId] = useState("");

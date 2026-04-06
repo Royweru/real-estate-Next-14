@@ -3,27 +3,28 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
+import { LucideIcon } from 'lucide-react'
 
 export const SidebarItem = ({
     label,
-    iconSrc,
+    icon: Icon,
     href
 }:{
-    label:string,
-    iconSrc:string,
-    href:string
+    label: string,
+    icon: LucideIcon,
+    href: string
 }) => {
     const pathname = usePathname()
-    const isActive = pathname===href
+    const isActive = pathname === href || pathname.startsWith(href + '/')
   return (
     <Button 
-     variant = {isActive? 'sidebarActive':"sidebar"}
-     className=' w-full'
+     variant={isActive ? 'sidebarActive' : 'sidebar'}
+     className='w-full'
     >
      <Link href={href}>
-        <div className='  relative gap-x-2 w-full flex items-center'>
-            <img src={iconSrc} alt={label} height={20} width={20} />
-            <span className=' text-sm '>
+        <div className='gap-x-2.5 w-full flex items-center'>
+            <Icon className='h-5 w-5 shrink-0' />
+            <span className='text-sm font-medium'>
                 {label}
             </span>
         </div>

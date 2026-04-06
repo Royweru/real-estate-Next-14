@@ -1,4 +1,5 @@
 import { PropertiesHeader } from "@/components/properties-header";
+import { DashboardStats } from "@/components/dashboard-stats";
 import React from "react";
 import { FetchTypes } from "@/actions/fetchTypes";
 import { fetchCategories } from "@/actions/fetchCategories";
@@ -20,9 +21,10 @@ const PropertiesPage = async ({
     locationId?: string;
     categoryId?: string;
     typeId?: string;
+    title?: string;
   };
 }) => {
-  const { statusId, locationId, categoryId, typeId } = searchParams;
+  const { statusId, locationId, categoryId, typeId, title } = searchParams;
   const user = await serverUser();
   if (!user) redirect("/auth/sign-in");
   const [categories, types, status, locations, properties] = await Promise.all([
@@ -35,13 +37,15 @@ const PropertiesPage = async ({
       locationId,
       categoryId,
       typeId,
+      title,
       userId: user.id,
     }),
   ]);
 
   return (
-    <div className="w-full h-full flex flex-col gap-y-4">
+    <div className="w-full h-full flex flex-col gap-y-6 p-4 md:p-6">
       <PropertiesHeader count={properties.length} />
+      <DashboardStats properties={properties} />
       <PropertiesManagementFilter
         categories={categories}
         propertyTypes={types}

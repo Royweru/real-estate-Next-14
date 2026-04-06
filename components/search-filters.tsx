@@ -17,7 +17,7 @@ export const SearchFilters = ({
   categories,
   propertyTypes,
 }: {
-  locations: Location[];
+  locations: { id: string; county: string; city: string }[];
   status: Status[];
   categories: Category[];
   propertyTypes: Type[];

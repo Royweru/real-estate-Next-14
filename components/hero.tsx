@@ -1,6 +1,6 @@
 import React from 'react'
 import { SearchBox } from './search-box'
-import { Category, Listing, Location, Type, User } from '@prisma/client'
+import { Category, Listing, Type, User } from '@prisma/client'
 import { HeroNav } from './hero-nav'
 
 export const Hero = ({
@@ -10,7 +10,9 @@ export const Hero = ({
   user
 }:{
   propertyTypes:Type[],
-  categories:Category[],locations:Location[],user:User &{
+  categories:Category[],
+  locations: { id: string; county: string; city: string; properties: unknown[] }[],
+  user:User &{
   listings:Listing[]
 }| null}) => {
   return (
