@@ -5,6 +5,12 @@ import { createListingSchema } from "../schemas";
 import { serverUser } from "@/lib/serverUser";
 import { db } from "@/lib/prismadb";
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
+import { ApprovalEmailTemplate } from "@/components/approval-email-template";
+import { RejectionEmailTemplate } from "@/components/rejection-email-template";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
 const app = new Hono()
 .post(
@@ -146,10 +152,36 @@ const app = new Hono()
     try {
       const activeStatus = await db.status.findFirst({ where: { name: "Active" } });
       if (!activeStatus) return c.json({ error: "Active status missing" }, 500);
+
+      const listing = await db.listing.findUnique({
+        where: { id: listingId },
+        include: { user: true },
+      });
+      if (!listing) return c.json({ error: "Listing not found" }, 404);
+
       const res = await db.listing.update({
         where: { id: listingId },
         data: { statusId: activeStatus.id },
       });
+
+      // Send approval email notification
+      if (listing.user.email) {
+        try {
+          await resend.emails.send({
+            from: "Apartimenti <onboarding@resend.dev>",
+            to: listing.user.email,
+            subject: `Your listing "${listing.title}" has been approved!`,
+            react: ApprovalEmailTemplate({
+              listingTitle: listing.title,
+              listingUrl: `${baseUrl}/listings/${listingId}/view`,
+              ownerName: listing.user.name || "there",
+            }),
+          });
+        } catch (emailError) {
+          console.error("Failed to send approval email:", emailError);
+        }
+      }
+
       return c.json(res, 200);
     } catch (error) {
       console.error(error);
@@ -170,10 +202,36 @@ const app = new Hono()
     try {
       const rejectedStatus = await db.status.findFirst({ where: { name: "Rejected" } });
       if (!rejectedStatus) return c.json({ error: "Rejected status missing" }, 500);
+
+      const listing = await db.listing.findUnique({
+        where: { id: listingId },
+        include: { user: true },
+      });
+      if (!listing) return c.json({ error: "Listing not found" }, 404);
+
       const res = await db.listing.update({
         where: { id: listingId },
         data: { statusId: rejectedStatus.id },
       });
+
+      // Send rejection email notification
+      if (listing.user.email) {
+        try {
+          await resend.emails.send({
+            from: "Apartimenti <onboarding@resend.dev>",
+            to: listing.user.email,
+            subject: `Update on your listing "${listing.title}"`,
+            react: RejectionEmailTemplate({
+              listingTitle: listing.title,
+              ownerName: listing.user.name || "there",
+              reason: "Please review your listing details, ensure all information is accurate and complete, and resubmit for approval.",
+            }),
+          });
+        } catch (emailError) {
+          console.error("Failed to send rejection email:", emailError);
+        }
+      }
+
       return c.json(res, 200);
     } catch (error) {
       console.error(error);
