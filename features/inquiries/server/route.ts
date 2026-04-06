@@ -2,7 +2,11 @@ import { db } from "@/lib/prismadb";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { NextResponse } from "next/server";
-import { string, z } from "zod";
+import { z } from "zod";
+import { Resend } from "resend";
+import { InquiryEmailTemplate } from "@/components/inquiry-email-template";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const app = new Hono()
 .post(
@@ -10,7 +14,7 @@ const app = new Hono()
      zValidator("json",z.object({
         listingId:z.string(),
         name:z.string().min(1,"Name is required"),
-        email:z.string().min(1,"Email is required"),
+        email:z.string().email("Valid email is required"),
         phoneNo:z.string().optional(),
         message:z.string().optional()
      })),
@@ -18,6 +22,17 @@ const app = new Hono()
         const {name,listingId,email,phoneNo,message} = c.req.valid("json")
 
         try {
+            const listing = await db.listing.findUnique({
+                where: { id: listingId },
+                include: {
+                    user: true,
+                },
+            })
+
+            if (!listing) {
+                return c.json({ error: "Listing not found" }, 404)
+            }
+
             const res = await db.inquiry.create({
                 data:{
                     listingId,
@@ -27,10 +42,30 @@ const app = new Hono()
                     message
                 }
             })
-            return NextResponse.json(res,{status:201})
+
+            try {
+                if (listing.user.email) {
+                    await resend.emails.send({
+                        from: "Apartimenti <onboarding@resend.dev>",
+                        to: listing.user.email,
+                        subject: `New inquiry on "${listing.title}"`,
+                        react: InquiryEmailTemplate({
+                            listingTitle: listing.title,
+                            inquiryName: name,
+                            inquiryEmail: email,
+                            inquiryPhone: phoneNo,
+                            inquiryMessage: message,
+                        }),
+                    })
+                }
+            } catch (emailError) {
+                console.error("Failed to send inquiry notification email:", emailError)
+            }
+
+            return c.json(res,{status:201})
         } catch (error) {
             console.error(error)
-            return new NextResponse("Internal server error",{status:500})
+            return c.json({ error: "Internal server error" }, 500)
         }
     }
 )

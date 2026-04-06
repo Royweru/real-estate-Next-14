@@ -1,4 +1,6 @@
+"use client"
 import Link from 'next/link'
+import Image from 'next/image'
 import React from 'react'
 import { SidebarItem } from './sidebar-item'
 import { UserButton } from './user-button'
@@ -14,7 +16,7 @@ export const Sidebar = (
      <div className=' relative w-full h-full  flex flex-col '>
            <Link href={'/'}>
               <div className=' pb-7 pt-8 pl-4 flex items-center gap-x-3'>
-                <img src='/logo.png' alt='logo' height={100} width={75} />
+                <Image src='/logo.png' alt='logo' height={100} width={75} />
                 <span className=' text-stone-800/95 text-md font-bold'>
                     Apartamenti
                 </span>

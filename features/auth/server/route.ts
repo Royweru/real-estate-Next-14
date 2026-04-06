@@ -6,6 +6,8 @@ import bcrypt from 'bcryptjs'
 import {db} from '@/lib/prismadb'
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
+import { generateToken } from "@/lib/generateToken";
+import { sendVerificationEmail } from "@/lib/mail";
 const app = new Hono()
 
 .post('/register',
@@ -27,6 +29,12 @@ const app = new Hono()
             name
         }
     })
+    try {
+        const verificationToken = await generateToken(email)
+        await sendVerificationEmail(verificationToken.email, verificationToken.token)
+    } catch (error) {
+        console.error("Failed to send verification email:", error)
+    }
     return c.json({message:'User created successfully',user:newUser},201)
 })
 .post('/login',

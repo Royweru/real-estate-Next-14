@@ -14,8 +14,10 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Login } from '@/actions/login';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export const SignInCard = () => {
+  const router = useRouter()
   const [isPending, startTransition] = useTransition()
   
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -30,14 +32,15 @@ export const SignInCard = () => {
     startTransition(async()=>{
         const res = await Login(vals)
         if(res?.error){
-            toast.error(res?.error,{
+            toast.error(res.error,{
                 style:{ backgroundColor:"red", color:"#fff" }
             })
         } else {
-            toast.success(res?.message||"Successfully logged in",{
+            toast.success(res.message||"Successfully logged in",{
                 style:{ backgroundColor:"green", color:"#fff" }
             })  
-            window.location.reload()
+            router.push('/')
+            router.refresh()
         }
     })
   }

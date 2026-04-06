@@ -5,8 +5,6 @@ import { LoginSchema } from "@/features/auth/schemas";
 import { AuthError } from "next-auth";
 import { z } from "zod";
 
-
-
 export const Login = async (vals:z.infer<typeof LoginSchema>)=>{
     const validatedFields = LoginSchema.safeParse(vals);
     if(!validatedFields.success) return {error:"Invalid fields"}
@@ -16,9 +14,9 @@ export const Login = async (vals:z.infer<typeof LoginSchema>)=>{
         await signIn("credentials",{
             email,
             password,
-            redirectTo:'/'
+            redirect: false,
         })
-        return {message:"Succesfully logged in !"}
+        return {message:"Successfully logged in!"}
     } catch (err) {
        if(err instanceof AuthError){
         switch(err.type){
@@ -27,13 +25,16 @@ export const Login = async (vals:z.infer<typeof LoginSchema>)=>{
             case "AccessDenied":
                 return {error:"Access denied"}
             case "InvalidCallbackUrl":
-                return {error:"Invalid call back url"}
+                return {error:"Invalid callback url"}
             case "JWTSessionError":
                 return {error:"JWT session error"}
             case "MissingSecret" :
                 return {error:"Missing secret"}
+            default:
+                return {error:"Something went wrong"}
         }   
        } 
+       return {error:"Something went wrong"}
     } 
 }
 

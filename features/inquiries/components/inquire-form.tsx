@@ -15,12 +15,13 @@ export const InquireForm = ({
   const [phoneNo, setPhoneNo] = useState("");
   const [message, setMessage] = useState("");
   const [name, setName] = useState("");
-  const [isLoading,setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+
   const onSubmit = async () => {
-    setIsLoading(false)
-    if (!email) return toast.error("Missing fields");
-    if (!name) return toast.error("Missing fields");
-    if (!listingId) return toast.error("Require the listing Id");
+    if (!email || !name) return toast.error("Please fill in all required fields");
+    if (!listingId) return toast.error("Listing not found");
+
+    setIsLoading(true);
     try {
       const res = await axios.post("/api/inquiries/create", {
         name,
@@ -34,32 +35,31 @@ export const InquireForm = ({
         setPhoneNo("");
         setMessage("");
         setName("");
-        toast.success("Inquiry submitted successfully !",{
-          style:{
-            background:"green",
-            color:"white"
-          }
-        });
+        toast.success("Inquiry submitted successfully!");
       }
     } catch (error) {
-      console.error(error);
-      toast.error("Ooopsy something went wrong!!");
-    } finally{
-      setIsLoading(false)
+      const msg =
+        axios.isAxiosError(error) && error.response?.data?.error
+          ? error.response.data.error
+          : "Failed to submit inquiry. Please try again.";
+      toast.error(msg);
+    } finally {
+      setIsLoading(false);
     }
   };
+
   return (
-    <div className=" relative grid  gap-3 lg:gap-4 p-2 md:p-4 rounded-md bg-slate-100/70 shadow-sm">
-      <div className=" space-y-1.5 ">
-        <Label className=" font-semibold">Name (*)</Label>
+    <div className="relative grid gap-3 lg:gap-4 p-2 md:p-4 rounded-md bg-slate-100/70 shadow-sm">
+      <div className="space-y-1.5">
+        <Label className="font-semibold">Name (*)</Label>
         <Input
-          placeholder="John doe"
+          placeholder="John Doe"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
       </div>
-      <div className=" space-y-1.5">
-        <Label className=" font-semibold">Email (*)</Label>
+      <div className="space-y-1.5">
+        <Label className="font-semibold">Email (*)</Label>
         <Input
           type="email"
           placeholder="johndoe@gmail.com"
@@ -68,8 +68,8 @@ export const InquireForm = ({
         />
       </div>
 
-      <div className=" space-y-1.5">
-        <Label className=" font-semibold">Phone number</Label>
+      <div className="space-y-1.5">
+        <Label className="font-semibold">Phone number</Label>
         <Input
           placeholder="+254 759 354 299"
           value={phoneNo}
@@ -77,22 +77,22 @@ export const InquireForm = ({
         />
       </div>
 
-      <div className=" space-y-1.5 ">
-        <Label className=" font-semibold">Message</Label>
+      <div className="space-y-1.5">
+        <Label className="font-semibold">Message</Label>
         <Textarea
-          className=" min-h-14 font-mono text-neutral-800"
+          className="min-h-14 font-mono text-neutral-800"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
       </div>
-      <div className=" relative">
+      <div className="relative">
         <Button
           className="w-full font-semibold"
           variant={"outline"}
           onClick={onSubmit}
           disabled={isLoading}
         >
-          Submit
+          {isLoading ? "Submitting..." : "Submit"}
         </Button>
       </div>
     </div>
