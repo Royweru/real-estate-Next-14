@@ -65,7 +65,7 @@ export const SearchBox = ({
       className="bg-neutral-100/90 shadow-lg rounded-2xl w-full
      px-2 py-4 md:px-6 max-w-[850px] mx-auto relative"
     >
-      <div className="relative w-full flex items-center justify-start mb-3">
+      <div className="relative w-full flex items-center justify-center mb-3">
         <button
           className={`w-1/4 py-2 px-4 font-semibold ${
             activeTab === "rent"

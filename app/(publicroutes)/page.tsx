@@ -13,7 +13,6 @@ import { PropertyTypes } from "@/components/property-types";
 import { BlogsCTA } from "@/components/blogs-cta";
 import { HowItWorks } from "@/components/how-it-works";
 import { Testimonials } from "@/components/testimonials";
-import { Footer } from "@/components/main-footer";
 
 export default async function Home() {
   const [
@@ -53,7 +52,6 @@ export default async function Home() {
       <Testimonials />
       <PropertyTypes propertyTypes={propertyTypes} />
       <BlogsCTA />
-      <Footer />
     </>
   );
 }

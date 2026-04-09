@@ -30,6 +30,7 @@ export const Footer = () => {
             </Link>
           </nav>
         </div>
+       
       </div>
     </footer>
   );

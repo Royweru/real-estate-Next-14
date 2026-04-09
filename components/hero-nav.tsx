@@ -23,7 +23,7 @@ export const HeroNav = ({
 }) => {
     const signOut = () => logout()
     return (
-        <nav className='absolute w-full top-2 left-0 text-white z-20'>
+        <nav className='w-full py-4 text-white z-20'>
             <div className='max-w-7xl px-5 sm:px-8 md:px-10 lg:px-12 relative'>
                 <div className='w-full flex justify-between items-center'>
                     <div className="flex-shrink-0 items-center">
